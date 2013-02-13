@@ -15,11 +15,11 @@ Our aim is the profiler, which:
  * Has a GUI
 *  System:
  * Uses Qt
- * Can work on both linux & windows perf interfaces
- * Has extended perf interfaces
+ * Can work on both linux & windows basic and extended perf interfaces
+ * Can use foreign perf interfaces(i.e. vtune or oprofile kernel driver)
  * Compatible with gcc 4.6.2 and MS VS 2010
- * Has an installer, and automatic updates
- * Has GPL
+ * Has an installer and automatic updates
  * Has pretty source code
  * Has no warnings on source code
  * Is optimized and tested with klockwork and valgrind
+ * Licensed under GPL
