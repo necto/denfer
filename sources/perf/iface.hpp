@@ -93,7 +93,7 @@ public:
      * Return function calls counters
      * @param pointer to externally created table with function counters
      */
-    static getValues(FunctionCallTable_t* func_table) = 0;
+    virtual void getValues(FunctionCallTable_t* func_table) = 0;
     
     /**
      * Virtual destructor to ensure proper deallocation
