@@ -1,6 +1,3 @@
-INCLUDEPATH+= . ..
-DESTDIR = bin/
-CONFIG += qt debug
-TARGET = denfer
-TEMPLATE = app
-SUBDIRS = sources/*
+TEMPLATE = subdirs
+DESTDIR = bin
+SUBDIRS = sources
