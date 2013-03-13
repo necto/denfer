@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <QtCore/QMap>
+#include <QtCore/QVector>
 
 namespace Perf
 {
@@ -18,6 +18,7 @@ namespace Perf
 enum PerfCountersEnum
 {
     COUNTER_FUNC_CALLS,
+    COUNTER_SAMPLING,
     COUNTER_LAST
 };
 
@@ -74,32 +75,51 @@ public:
      * Virtual destructor to ensure proper deallocation
      * of implementation class.
      */
-    virtual ~PerfCounter() = 0;
+    virtual void destroy() = 0;
 };
 
 
-typedef QMap<int, int> FunctionCallTable_t;
+typedef unsigned long int Addr_t;
+typedef unsigned long int Cnt_t;
 
-class FunctionCallCounter : public PerfCounter
+typedef QVector<Addr_t, Cnt_t> SimpleTable_t;
+
+class SimpleCounter : public PerfCounter
+{
+public:
+    /**
+     * Return function calls counters
+     * @param pointer to externally created table with function counters
+     */
+    virtual void getValues( SimpleTable_t* func_table) = 0;
+};
+
+class FuncCallCounter : public SimpleCounter
 {
 public:
     /**
      * Instantiate actual function call implementation class.
      * @return reference to instance of implementation class
      */
-    static FunctionCallCounter* create();
-    
+    static FuncCallCounter* create();
+};
+
+typedef unsigned int Rate_t;
+
+class SamplingCounter : public SimpleCounter
+{
+public:
     /**
-     * Return function calls counters
-     * @param pointer to externally created table with function counters
+     * Instantiate actual sampling counter implementation class.
+     * @return reference to instance of implementation class
      */
-    virtual void getValues(FunctionCallTable_t* func_table) = 0;
-    
+    static SamplingCounter* create();
+
     /**
-     * Virtual destructor to ensure proper deallocation
-     * of implementation class.
+     * Set rate of sampling measurements.
+     * @param rate of sampling in microseconds
      */
-    virtual ~FunctionCallCounter() = 0;
+    virtual void setRate( Rate_t rate);
 };
 
 }; // namespace Perf
