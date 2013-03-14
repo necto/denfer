@@ -8,3 +8,7 @@ TEMPLATE = lib
 # from the source files.
 OBJECTS_DIR = ../../bin/objects
 DESTDIR = ../../bin/libs
+
+# Specify source and header files location
+#SOURCES = *.cpp
+HEADERS = *.hpp

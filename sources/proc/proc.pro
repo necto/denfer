@@ -1,6 +1,3 @@
-! include( ../common.pri ) {
-    error( Couldn't find the common.pri file! )
+! include( ../../common_libs.pri ) {
+    error( Couldn't find the common_libs.pri file! )
 }
-
-HEADERS += *.hpp
-#SOURCES += *.cpp
