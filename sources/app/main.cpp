@@ -1,8 +1,8 @@
-/* 
- * File:   main.cpp
- * Author: genius
- *
- * Created on March 13, 2013, 9:44 PM
+/**
+ * Main of Denfer profile
+ */
+/**
+ * Copyright 2013 Denfer team
  */
 
 #include <cstdlib>
@@ -12,8 +12,9 @@ using namespace std;
 /*
  * 
  */
-int main(int argc, char** argv) {
-
+int main( int argc, char** argv) 
+{
+    // Not yet implemented
     return 0;
 }
 
