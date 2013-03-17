@@ -1,20 +1,19 @@
 /**
- * Implementation of performance manager class on Linux.
+ * Implementation of performance counters on Linux.
  * @author Denis Anisimov
  */
 /**
  * Copyright 2013 Denfer team
  */
 
-#include "../iface.hpp"
-#include "perfmanager.hpp"
+#include "perf_impl.hpp"
 
-namespace Perf
+namespace perf
 {
 
 PerfManager* PerfManager::create()
 {
-    return (PerfManager*)( new PerfManagerLinux);
+    return (PerfManager*)( new PerfManagerLinux());
 }
 
-}
+}; //namespace perf
