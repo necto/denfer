@@ -2,12 +2,11 @@
  * Implementation of performance manager class on Linux.
  * @author Denis Anisimov
  */
-
-#include "perfmanager.hpp"
-
 /**
  * Copyright 2013 Denfer team
  */
+ 
+#include "perfmanager.hpp"
 
 namespace perf
 {
@@ -28,4 +27,4 @@ QVector<PerfCounterInfo> PerfManagerLinux::getAvailableCounters()
     return QVector<PerfCounterInfo>();
 }
         
-}; //
+}; // namespace perf
