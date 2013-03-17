@@ -36,6 +36,9 @@ enum PerfCounterProvider
 
 class PerfCounter;
 
+/**
+ * Performance counter information
+ */
 struct PerfCounterInfo
 {
     QString name;
@@ -47,6 +50,7 @@ struct PerfCounterInfo
 
 /**
  * Generic performance manager interface
+ * 
  * @author Denis Anisimov
  */
 class PerfManager
@@ -59,9 +63,9 @@ public:
     static PerfManager* create();
 
     /**
-     * Return available counters as a bitmask.
-     * (see @link PerfCountersEnum)
-     * @return bitmask
+     * Return available counters info.
+     * (see @link PerfCounterInfo)
+     * @return QVector of structures
      */
     virtual QVector<PerfCounterInfo> getAvailableCounters() = 0;
 
@@ -74,6 +78,7 @@ public:
 
 /**
  * Generic performance counter interface
+ * 
  * @author Denis Anisimov
  */
 class PerfCounter
@@ -112,7 +117,13 @@ struct PlainRecord
 
 typedef QVector<PlainRecord> SimpleTable_t;
 
-class SimpleCounter : public PerfCounter
+/**
+ * Plain counter interface.
+ * 
+ * Performs count of data in format: `integer key` - `integer value`.
+ * @author Denis Anisimov
+ */
+class PlainCounter : public PerfCounter
 {
 public:
     /**
@@ -120,34 +131,6 @@ public:
      * @param pointer to externally created table with function counters
      */
     virtual void getValues( SimpleTable_t* func_table) = 0;
-};
-
-class FuncCallCounter : public SimpleCounter
-{
-public:
-    /**
-     * Instantiate actual function call implementation class.
-     * @return reference to instance of implementation class
-     */
-    static FuncCallCounter* create();
-};
-
-typedef unsigned int Rate_t;
-
-class SamplingCounter : public SimpleCounter
-{
-public:
-    /**
-     * Instantiate actual sampling counter implementation class.
-     * @return reference to instance of implementation class
-     */
-    static SamplingCounter* create();
-
-    /**
-     * Set rate of sampling measurements.
-     * @param rate of sampling in microseconds
-     */
-    virtual void setRate( Rate_t rate);
 };
 
 }; // namespace Perf
