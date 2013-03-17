@@ -11,7 +11,7 @@
 #include <QtCore/QString>
 #include <stdint.h>
 
-namespace Perf
+namespace perf
 {
 
 /**
@@ -133,4 +133,4 @@ public:
     virtual void getValues( SimpleTable_t* func_table) = 0;
 };
 
-}; // namespace Perf
+}; // namespace perf
