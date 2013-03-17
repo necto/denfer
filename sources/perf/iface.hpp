@@ -8,18 +8,41 @@
 #pragma once
 
 #include <QtCore/QVector>
+#include <QtCore/QString>
+#include <stdint.h>
 
 namespace Perf
 {
 
 /**
- * Enum of possible performance counters
+ * Enum of possible performance counter types
  */
-enum PerfCountersEnum
+enum PerfCounterType
 {
-    COUNTER_FUNC_CALLS,
-    COUNTER_SAMPLING,
+    COUNTER_PLAIN,
+    COUNTER_HIERARCHICAL,
     COUNTER_LAST
+};
+
+
+/**
+ * Enum of perf counters providers
+ */
+enum PerfCounterProvider
+{
+    PROVIDER_DENFER,
+    PROVIDER_LAST
+};
+
+class PerfCounter;
+
+struct PerfCounterInfo
+{
+    QString name;
+    PerfCounterType type;
+    PerfCounterProvider provider;
+    uint64_t guid;
+    PerfCounter* (*create)(uint64_t);
 };
 
 /**
@@ -40,13 +63,13 @@ public:
      * (see @link PerfCountersEnum)
      * @return bitmask
      */
-    virtual int getAvailableCounters() = 0;
+    virtual QVector<PerfCounterInfo> getAvailableCounters() = 0;
 
     /**
      * Virtual destructor to ensure proper deallocation
      * of implementation class.
      */
-    virtual ~PerfManager() = 0;
+    virtual void destroy() = 0;
 };
 
 /**
@@ -78,11 +101,16 @@ public:
     virtual void destroy() = 0;
 };
 
+/**
+ * Definitions of plain counter data storage structures
+ */
+struct PlainRecord
+{
+    uint64_t key;
+    uint64_t val;
+};
 
-typedef unsigned long int Addr_t;
-typedef unsigned long int Cnt_t;
-
-typedef QVector<Addr_t, Cnt_t> SimpleTable_t;
+typedef QVector<PlainRecord> SimpleTable_t;
 
 class SimpleCounter : public PerfCounter
 {
