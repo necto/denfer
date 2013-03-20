@@ -36,4 +36,4 @@ public:
     virtual void destroy();
 };
 
-}; // namespace Perf
+}; // namespace perf
