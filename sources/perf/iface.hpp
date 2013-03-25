@@ -14,6 +14,21 @@
 namespace perf
 {
 
+class PerfCounter;
+
+/**
+ *  Genereic performance counter factory interface.
+ */
+class PerfCounterFactory
+{
+    /**
+     * Create particular counter based on its guid
+     * @params guid of counter
+     * @return reference to instance of counter class
+     */
+    virtual PerfCounter* createCounter( uint64_t guid) = 0;
+};
+
 /**
  * Enum of possible performance counter types
  */
@@ -34,8 +49,6 @@ enum PerfCounterProvider
     PROVIDER_LAST
 };
 
-class PerfCounter;
-
 /**
  * Performance counter information
  */
@@ -45,7 +58,7 @@ struct PerfCounterInfo
     PerfCounterType type;
     PerfCounterProvider provider;
     uint64_t guid;
-    PerfCounter* (*create)(uint64_t);
+    PerfCounterFactory* factory;
 };
 
 /**

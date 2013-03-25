@@ -1,5 +1,6 @@
 /**
- * Header file for Performance manager class on Linux
+ * Header file for Performance manager class and 
+ * Performance Counter Factory class on Linux
  * 
  * @author Denis Anisimov
  */
@@ -14,13 +15,35 @@
 namespace perf
 {
 
-class PerfManagerLinux : public PerfManager
+namespace lin
+{
+
+/**
+ * Perf Counters Factory implementation on Linux
+ */
+class PerfCounterFactoryImpl : public PerfCounterFactory
+{
+public:
+    /**
+     * Create  particular counter based on its guid
+     * @params guid of counter
+     * @return reference to instance of counter class
+     */
+    virtual PerfCounter* createCounter( uint64_t guid);
+private:
+    /**
+     * Default constructor
+     */
+    PerfCounterFactoryImpl();
+};
+
+class PerfManagerImpl : public PerfManager
 {
 public:
     /**
      * Default constructor
      */
-    PerfManagerLinux();
+    PerfManagerImpl();
     
     /**
      * Return available counters info.
@@ -35,5 +58,7 @@ public:
      */
     virtual void destroy();
 };
+
+}; // namespace linux
 
 }; // namespace perf

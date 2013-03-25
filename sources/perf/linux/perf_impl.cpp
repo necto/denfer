@@ -11,9 +11,11 @@
 namespace perf
 {
 
+using lin::PerfManagerImpl;
+
 PerfManager* PerfManager::create()
 {
-    return (PerfManager*)( new PerfManagerLinux());
+    return (PerfManager*)( new PerfManagerImpl());
 }
 
 }; //namespace perf

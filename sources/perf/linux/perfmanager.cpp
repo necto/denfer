@@ -11,20 +11,36 @@
 namespace perf
 {
 
-PerfManagerLinux::PerfManagerLinux()
+namespace lin
+{
+
+PerfCounterFactoryImpl::PerfCounterFactoryImpl()
 {
     // Not yet implemented
 }
 
-void PerfManagerLinux::destroy()
+PerfCounter* PerfCounterFactoryImpl::createCounter( uint64_t guid)
+{
+    // Not yet implemented
+    return (PerfCounter*)( NULL);
+}
+
+PerfManagerImpl::PerfManagerImpl()
 {
     // Not yet implemented
 }
 
-QVector<PerfCounterInfo> PerfManagerLinux::getAvailableCounters()
+void PerfManagerImpl::destroy()
+{
+    // Not yet implemented
+}
+
+QVector<PerfCounterInfo> PerfManagerImpl::getAvailableCounters()
 {
     // Not yet implemented
     return QVector<PerfCounterInfo>();
 }
-        
+
+}; // namespace linux
+
 }; // namespace perf
