@@ -19,7 +19,7 @@ PerfCounterFactoryImpl::PerfCounterFactoryImpl()
     // Not yet implemented
 }
 
-PerfCounter* PerfCounterFactoryImpl::createCounter( uint64_t guid)
+PerfCounter* PerfCounterFactoryImpl::createCounter( uint64_t uuid)
 {
     // Not yet implemented
     return (PerfCounter*)( NULL);

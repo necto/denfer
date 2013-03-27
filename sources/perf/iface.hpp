@@ -9,6 +9,7 @@
 
 #include <QtCore/QVector>
 #include <QtCore/QString>
+#include <QtCore/QUuid>
 #include <stdint.h>
 
 namespace perf
@@ -26,7 +27,7 @@ class PerfCounterFactory
      * @params guid of counter
      * @return reference to instance of counter class
      */
-    virtual PerfCounter* createCounter( uint64_t guid) = 0;
+    virtual PerfCounter* createCounter( QUuid uuid) = 0;
 };
 
 /**
@@ -57,7 +58,7 @@ struct PerfCounterInfo
     QString name;
     PerfCounterType type;
     PerfCounterProvider provider;
-    uint64_t guid;
+    QUuid uuid;
     PerfCounterFactory* factory;
 };
 
@@ -90,6 +91,29 @@ public:
 };
 
 /**
+ * Definitions of plain counter data storage structures
+ */
+struct PlainRecord
+{
+    uint64_t key;
+    uint64_t val;
+};
+
+typedef QVector<PlainRecord> SimpleTable_t;
+
+/**
+ * Storage class for different types of possible values
+ */
+class CounterValues
+{
+    /**
+     * Get values as simple table
+     * @return pointer to simple key-value data storage
+     */
+    virtual SimpleTable_t* getSimpleTable() = 0;
+};
+
+/**
  * Generic performance counter interface
  * 
  * @author Denis Anisimov
@@ -113,37 +137,17 @@ public:
     virtual void reset() = 0;
 
     /**
+     * Get counted values
+     * @return storage class.
+     */
+    virtual CounterValues* getValues() = 0;
+
+    /**
      * Virtual destructor to ensure proper deallocation
      * of implementation class.
      */
     virtual void destroy() = 0;
 };
 
-/**
- * Definitions of plain counter data storage structures
- */
-struct PlainRecord
-{
-    uint64_t key;
-    uint64_t val;
-};
-
-typedef QVector<PlainRecord> SimpleTable_t;
-
-/**
- * Plain counter interface.
- * 
- * Performs count of data in format: `integer key` - `integer value`.
- * @author Denis Anisimov
- */
-class PlainCounter : public PerfCounter
-{
-public:
-    /**
-     * Return function calls counters
-     * @param pointer to externally created table with function counters
-     */
-    virtual void getValues( SimpleTable_t* func_table) = 0;
-};
 
 }; // namespace perf
