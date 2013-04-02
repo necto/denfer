@@ -6,3 +6,16 @@
  */
 
 #pragma once
+
+namespace gui
+{
+
+class MainWindowIface
+{
+public:
+    static MainWindowIface* create( int argc, char** argv);
+
+    virtual void show() = 0;
+};
+
+}; //namespace gui

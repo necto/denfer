@@ -8,7 +8,7 @@
 #include <QtCore>
 #include <QtGui>
 #include "iface.hpp"
-#include "application.hpp"
+#include "app.hpp"
 
 namespace core
 {
@@ -16,16 +16,13 @@ namespace core
 App::App( int argc, char** argv)
     :qapp(argc, argv)
 {
-    dialog = new QDialog;
-    l = new QLabel( dialog);
-    l->setText("<h1> This is the Denfer application</h1>");
-    dialog->show();
+    window = MainWindowIface::create( argc, argv);
+    window->show();
 }
 
 App::~App()
 {
-    delete l;
-    delete dialog;
+    delete window;
 }
 
 int App::execute()
