@@ -6,3 +6,19 @@
  */
 
 #pragma once
+
+#include <QtCore/QString>
+#include <QtCore/QVector>
+
+namespace proc
+{
+
+class ProcessListIface
+{
+public:
+    virtual QVector<QString> getProcessNames() = 0;
+
+    static ProcessListIface* create();
+};
+
+}; //namespace proc

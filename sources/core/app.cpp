@@ -16,6 +16,7 @@ namespace core
 App::App( int argc, char** argv)
     :qapp(argc, argv)
 {
+    procs = ProcessListIface::create();
     window = MainWindowIface::create( argc, argv);
     window->show();
 }
@@ -23,10 +24,12 @@ App::App( int argc, char** argv)
 App::~App()
 {
     delete window;
+    delete procs;
 }
 
 int App::execute()
 {
+    window->update( procs->getProcessNames());
     return qapp.exec();
 }
 

@@ -10,16 +10,19 @@
 #include <QtCore>
 #include "iface.hpp"
 #include "gui/iface.hpp"
+#include "proc/iface.hpp"
 
 namespace core
 {
 
 using gui::MainWindowIface;
+using proc::ProcessListIface;
 
 class App :public Application
 {
     QApplication qapp;
     MainWindowIface* window;
+    ProcessListIface* procs;
 
 public:
     App( int argc, char** argv);

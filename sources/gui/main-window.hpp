@@ -1,5 +1,5 @@
 /**
- * The primary( and single) implementation of gui MainWindowIface
+ * The primary( and sole) implementation of gui MainWindowIface
  */
 /**
  * Copyright 2013 Denfer team
@@ -22,6 +22,7 @@ public:
     ~MainWindow();
 
     void show();
+    void update( QVector<QString> procNames);
 };
 
 }; //namespace gui

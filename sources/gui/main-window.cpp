@@ -23,6 +23,14 @@ void MainWindow::show()
     dialog->show();
 }
 
+void MainWindow::update( QVector<QString> procNames)
+{
+    QString list = "Process list: ";
+    for (int i = 0; i < procNames.count(); ++i)
+        list += procNames[i] + ", ";
+    l->setText(list);
+}
+
 MainWindow::~MainWindow()
 {
     delete l;
