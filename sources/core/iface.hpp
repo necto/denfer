@@ -6,3 +6,16 @@
  */
 
 #pragma once
+
+namespace core
+{
+
+class Application
+{
+public:
+    virtual int execute() = 0;
+
+    static Application* create( int argc, char** argv);
+};
+
+}; //namespace core

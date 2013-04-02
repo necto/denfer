@@ -6,15 +6,19 @@
  */
 
 #include <cstdlib>
+#include "core/iface.hpp"
 
 using namespace std;
+using namespace core;
 
 /*
  * 
  */
-int main( int argc, char** argv) 
+int main( int argc, char** argv)
 {
-    // Not yet implemented
-    return 0;
+    Application* app = Application::create( argc, argv);
+    int ret = app->execute();
+    delete app;
+    return ret;
 }
 
