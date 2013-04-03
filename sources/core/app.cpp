@@ -23,8 +23,8 @@ App::App( int argc, char** argv)
 
 App::~App()
 {
-    delete window;
-    delete procs;
+    MainWindowIface::destroy( window);
+    ProcessListIface::destroy( procs);
 }
 
 int App::execute()
@@ -36,6 +36,12 @@ int App::execute()
 Application* Application::create( int argc, char** argv)
 {
     return new App(argc, argv);
+}
+
+bool Application::destroy( Application* ref)
+{
+    delete (App*)ref;
+    return true;
 }
 
 }; //namespace core

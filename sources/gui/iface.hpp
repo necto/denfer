@@ -15,12 +15,11 @@ namespace gui
 class MainWindowIface
 {
 public:
-    virtual ~MainWindowIface() = 0;
-
     static MainWindowIface* create( int argc, char** argv);
+    static bool destroy( MainWindowIface* ref);
 
     virtual void show() = 0;
     virtual void update( QVector<QString> procNames) = 0;
 };
 
-}; //namespace gui
+}; //namespaceg gui

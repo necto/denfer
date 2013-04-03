@@ -26,7 +26,7 @@ class App :public Application
 
 public:
     App( int argc, char** argv);
-    ~App();
+    virtual ~App();
 
     int execute();
 };

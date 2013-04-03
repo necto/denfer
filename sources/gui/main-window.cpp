@@ -44,4 +44,10 @@ MainWindowIface* MainWindowIface::create( int argc, char** argv)
     return new MainWindow;
 }
 
+bool MainWindowIface::destroy( MainWindowIface* ref)
+{
+    delete (MainWindow*)ref;
+    return true;
+}
+
 }; //namespace gui

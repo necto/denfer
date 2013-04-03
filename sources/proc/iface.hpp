@@ -16,10 +16,10 @@ namespace proc
 class ProcessListIface
 {
 public:
-    virtual ~ProcessListIface() = 0;
     virtual QVector<QString> getProcessNames() = 0;
 
     static ProcessListIface* create();
+    static bool destroy( ProcessListIface* ref);
 };
 
 }; //namespace proc

@@ -18,7 +18,7 @@ int main( int argc, char** argv)
 {
     Application* app = Application::create( argc, argv);
     int ret = app->execute();
-    delete app;
+    Application::destroy( app);
     return ret;
 }
 

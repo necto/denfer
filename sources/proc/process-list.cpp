@@ -26,4 +26,10 @@ ProcessListIface* ProcessListIface::create()
     return new ProcessList;
 }
 
+bool ProcessListIface::destroy( ProcessListIface* ref)
+{
+  delete (ProcessList*)ref;
+  return true;
+}
+
 }; //namespace proc
