@@ -1,5 +1,5 @@
 /**
- * The class -- realisation of Application iface.
+ * The main class of the application
  */
 /**
  * Copyright 2013 Denfer team. See http://github.com/necto/denfer
@@ -8,27 +8,27 @@
 #pragma once
 
 #include <QtCore>
-#include "iface.hpp"
+#include <QApplication>
 #include "gui/iface.hpp"
 #include "proc/iface.hpp"
 
-namespace core
+namespace app
 {
 
 using gui::MainWindowIface;
 using proc::ProcessListIface;
 
-class App :public Application
+class Application
 {
     QApplication qapp;
     MainWindowIface* window;
     ProcessListIface* procs;
 
 public:
-    App( int argc, char** argv);
-    virtual ~App();
+    Application( int argc, char** argv);
+    virtual ~Application();
 
     int execute();
 };
 
-}; //namespace core
+}; //namespace app

@@ -6,19 +6,19 @@
  */
 
 #include <cstdlib>
-#include "core/iface.hpp"
+#include "application.hpp"
 
 using namespace std;
-using namespace core;
+using namespace app;
 
 /*
  * 
  */
 int main( int argc, char** argv)
 {
-    Application* app = Application::create( argc, argv);
+    Application* app = new Application(argc, argv);
     int ret = app->execute();
-    Application::destroy( app);
+    delete app;
     return ret;
 }
 
