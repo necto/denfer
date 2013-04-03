@@ -11,5 +11,5 @@ DEFINES += "X_EXPORT=Q_DECL_IMPORT"
 SOURCES += *.cpp
 
 LIBS += -L../../bin/libs
-LIBS += -lcore -lgui -lproc
+LIBS += -lgui -lproc
 
