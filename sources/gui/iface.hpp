@@ -8,11 +8,12 @@
 #pragma once
 #include <QtCore/QVector>
 #include <QtCore/QString>
+#include <QtCore/QtGlobal>
 
 namespace gui
 {
 
-class MainWindowIface
+class X_EXPORT MainWindowIface
 {
 public:
     static MainWindowIface* create( int argc, char** argv);

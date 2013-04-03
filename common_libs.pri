@@ -4,6 +4,9 @@ WARNINGS += -Wall
 
 TEMPLATE = lib
 
+# Special define to do proper export in dll libs
+DEFINES += "X_EXPORT=Q_DECL_EXPORT"
+
 # The following keeps the generated files at least somewhat separate 
 # from the source files.
 OBJECTS_DIR = ../../bin/objects

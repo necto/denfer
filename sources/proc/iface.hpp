@@ -9,11 +9,12 @@
 
 #include <QtCore/QString>
 #include <QtCore/QVector>
+#include <QtCore/QtGlobal>
 
 namespace proc
 {
 
-class ProcessListIface
+class X_EXPORT ProcessListIface
 {
 public:
     virtual QVector<QString> getProcessNames() = 0;

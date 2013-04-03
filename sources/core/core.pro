@@ -4,3 +4,6 @@
 
 SOURCES += *.cpp
 HEADERS += *.hpp
+
+LIBS += -L../../bin/libs
+LIBS += -lgui -lproc

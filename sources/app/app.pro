@@ -1,10 +1,15 @@
+TEMPLATE = app
+
 OBJECTS_DIR = ../../bin/objects
 DESTDIR = ../../bin
-TEMPLATE = app
-SOURCES += main.cpp
-LIBS += -L../../bin/libs
 TARGET = denfer
 INCLUDEPATH += ".."
 
-LIBS += -lcore -lgui -lhost -lperf -lsyminfo -lproc
+# Define to do proper dll symbols import
+DEFINES += "X_EXPORT=Q_DECL_IMPORT"
+
+SOURCES += main.cpp
+
+LIBS += -L../../bin/libs
+LIBS += -lcore -lgui -lproc
 

@@ -7,10 +7,12 @@
 
 #pragma once
 
+#include <QtCore/QtGlobal>
+
 namespace core
 {
 
-class Application
+class X_EXPORT Application
 {
 public:
     virtual int execute() = 0;
