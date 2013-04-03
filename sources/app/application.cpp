@@ -7,6 +7,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QDebug>
 #include "application.hpp"
 
 namespace app
@@ -18,20 +19,33 @@ Application::Application( int argc, char** argv)
     detectMode( qapp.arguments());
     procs = ProcessListIface::create();
     bl = BusinessLogicIface::create();
-    window = MainWindowIface::create( argc, argv);
-    window->show();
+    if ( mode == GUI)
+    {
+        window = MainWindowIface::create( argc, argv);
+        window->show();
+    }
 }
 
 Application::~Application()
 {
-    MainWindowIface::destroy( window);
+    if ( mode == GUI)
+    {
+        MainWindowIface::destroy( window);
+    }
     BusinessLogicIface::destroy( bl);
     ProcessListIface::destroy( procs);
 }
 
 int Application::execute()
 {
-    window->update( bl->filterSmth( procs->getProcessNames()));
+    QVector<QString> process_names = bl->filterSmth( procs->getProcessNames());
+    if ( mode == GUI)
+        window->update( process_names);
+    else
+    {
+        Q_FOREACH( const QString& name, process_names)
+            qDebug() << name <<"\n";
+    }
     return qapp.exec();
 }
 
