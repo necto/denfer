@@ -6,3 +6,6 @@ unix {
     SOURCES += "linux/*.cpp"
     HEADERS += "linux/*.hpp"
 }
+
+SOURCES += \
+    dummy.cpp
