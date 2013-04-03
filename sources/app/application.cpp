@@ -17,7 +17,7 @@ Application::Application( int argc, char** argv)
 {
     procs = ProcessListIface::create();
     window = MainWindowIface::create( argc, argv);
-    window->show();
+    window->showWindow();
 }
 
 Application::~Application()
@@ -28,7 +28,6 @@ Application::~Application()
 
 int Application::execute()
 {
-    window->update( procs->getProcessNames());
     return qapp.exec();
 }
 

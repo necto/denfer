@@ -8,6 +8,7 @@ INCLUDEPATH += ".."
 # Define to do proper dll symbols import
 DEFINES += "X_EXPORT=Q_DECL_IMPORT"
 
+HEADERS += *.hpp
 SOURCES += *.cpp
 
 LIBS += -L../../bin/libs

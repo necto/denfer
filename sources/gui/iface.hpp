@@ -15,12 +15,12 @@ namespace gui
 
 class X_EXPORT MainWindowIface
 {
+
 public:
     static MainWindowIface* create( int argc, char** argv);
     static bool destroy( MainWindowIface* ref);
 
-    virtual void show() = 0;
-    virtual void update( QVector<QString> procNames) = 0;
+    virtual void showWindow() = 0;
 };
 
 }; //namespaceg gui
