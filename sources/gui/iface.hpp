@@ -15,6 +15,8 @@ namespace gui
 class MainWindowIface
 {
 public:
+    virtual ~MainWindowIface() = 0;
+
     static MainWindowIface* create( int argc, char** argv);
 
     virtual void show() = 0;

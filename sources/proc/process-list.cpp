@@ -11,6 +11,10 @@
 namespace proc
 {
 
+ProcessList::~ProcessList()
+{
+}
+
 QVector<QString> ProcessList::getProcessNames()
 {
     QVector<QString> ret(10, QString("just another process"));
