@@ -40,8 +40,9 @@ int Application::execute()
 {
     QVector<QString> process_names = bl->filterSmth( procs->getProcessNames());
     if ( mode == GUI)
-	// Not yet implemented
-    else
+    {
+        // Not yet implemented
+    } else
     {
         Q_FOREACH( const QString& name, process_names)
             qDebug() << name <<"\n";
