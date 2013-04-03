@@ -23,7 +23,7 @@ BusinessLogicIface* BusinessLogicIface::create()
 
 bool BusinessLogicIface::destroy( BusinessLogicIface* ref)
 {
-    delete ref;
+    delete (BusinessLogic*)ref;
     return true;
 }
 
