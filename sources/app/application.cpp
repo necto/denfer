@@ -7,13 +7,12 @@
 
 #include <QtCore>
 #include <QtGui>
-#include "iface.hpp"
-#include "app.hpp"
+#include "application.hpp"
 
-namespace core
+namespace app
 {
 
-App::App( int argc, char** argv)
+Application::Application( int argc, char** argv)
     :qapp(argc, argv)
 {
     procs = ProcessListIface::create();
@@ -21,21 +20,16 @@ App::App( int argc, char** argv)
     window->show();
 }
 
-App::~App()
+Application::~Application()
 {
-    delete window;
-    delete procs;
+    MainWindowIface::destroy( window);
+    ProcessListIface::destroy( procs);
 }
 
-int App::execute()
+int Application::execute()
 {
     window->update( procs->getProcessNames());
     return qapp.exec();
 }
 
-Application* Application::create( int argc, char** argv)
-{
-    return new App(argc, argv);
-}
-
-}; //namespace core
+}; //namespace app

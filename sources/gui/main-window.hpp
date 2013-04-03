@@ -19,7 +19,7 @@ class MainWindow : public MainWindowIface
     QLabel* l;
 public:
     MainWindow();
-    ~MainWindow();
+    virtual ~MainWindow();
 
     void show();
     void update( QVector<QString> procNames);

@@ -20,6 +20,7 @@ public:
     virtual QVector<QString> getProcessNames() = 0;
 
     static ProcessListIface* create();
+    static bool destroy( ProcessListIface* ref);
 };
 
 }; //namespace proc

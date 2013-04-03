@@ -2,8 +2,3 @@
     error( Couldn't find the common_libs.pri file! )
 }
 
-SOURCES += *.cpp
-HEADERS += *.hpp
-
-LIBS += -L../../bin/libs
-LIBS += -lgui -lproc

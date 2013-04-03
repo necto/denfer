@@ -11,6 +11,10 @@
 namespace proc
 {
 
+ProcessList::~ProcessList()
+{
+}
+
 QVector<QString> ProcessList::getProcessNames()
 {
     QVector<QString> ret(10, QString("just another process"));
@@ -20,6 +24,12 @@ QVector<QString> ProcessList::getProcessNames()
 ProcessListIface* ProcessListIface::create()
 {
     return new ProcessList;
+}
+
+bool ProcessListIface::destroy( ProcessListIface* ref)
+{
+  delete (ProcessList*)ref;
+  return true;
 }
 
 }; //namespace proc
