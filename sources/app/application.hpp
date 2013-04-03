@@ -11,6 +11,7 @@
 #include <QApplication>
 #include "gui/iface.hpp"
 #include "proc/iface.hpp"
+#include "core/iface.hpp"
 
 namespace app
 {
@@ -23,6 +24,7 @@ class Application
     QApplication qapp;
     MainWindowIface* window;
     ProcessListIface* procs;
+    BusinessLogicIface* bl;
 
 public:
     Application( int argc, char** argv);

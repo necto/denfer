@@ -16,6 +16,7 @@ Application::Application( int argc, char** argv)
     :qapp(argc, argv)
 {
     procs = ProcessListIface::create();
+    bl = BusinessLogicIface::create();
     window = MainWindowIface::create( argc, argv);
     window->show();
 }
@@ -23,12 +24,13 @@ Application::Application( int argc, char** argv)
 Application::~Application()
 {
     MainWindowIface::destroy( window);
+    BusinessLogicIface::destroy( bl);
     ProcessListIface::destroy( procs);
 }
 
 int Application::execute()
 {
-    window->update( procs->getProcessNames());
+    window->update( bl->filterSmth( procs->getProcessNames()));
     return qapp.exec();
 }
 
