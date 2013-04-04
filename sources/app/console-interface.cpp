@@ -61,6 +61,9 @@ int ConsoleInterface::execute()
 
     foreach (QString name, process_names)
         qDebug() << name;
+    
+    QScriptValue app = script.newQObject( this);
+    script.globalObject().setProperty( "app", app);
 
     repl();
 
