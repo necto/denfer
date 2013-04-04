@@ -3,3 +3,6 @@
 }
 
 SOURCES += *.cpp
+
+LIBS += -L../../bin/libs
+LIBS += -lproc

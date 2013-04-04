@@ -9,21 +9,18 @@
 
 #include "user-interface.hpp"
 #include "gui/iface.hpp"
-#include "proc/iface.hpp"
 #include "core/iface.hpp"
 
 namespace app
 {
 
 using gui::MainWindowIface;
-using proc::ProcessListIface;
 using core::BusinessLogicIface;
 
 class Application
 {
     UserInterface* face;
-    ProcessListIface* procs;
-    BusinessLogicIface* bl;
+    BusinessLogicIface* core;
 
     enum
     {

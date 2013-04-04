@@ -24,20 +24,18 @@ Application::Application( int argc, char** argv)
         face = new GraphicalInterface( argc, argv);
     else
         face = new ConsoleInterface( argc, argv);
-    procs = ProcessListIface::create();
-    bl = BusinessLogicIface::create();
+    core = BusinessLogicIface::create();
+    face->setCore( core);
 }
 
 Application::~Application()
 {
-    BusinessLogicIface::destroy( bl);
-    ProcessListIface::destroy( procs);
+    BusinessLogicIface::destroy( core);
     delete face;
 }
 
 int Application::execute()
 {
-    QVector<QString> process_names = bl->filterSmth( procs->getProcessNames());
     return face->execute();
 }
 

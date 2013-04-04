@@ -22,6 +22,11 @@ ConsoleInterface::~ConsoleInterface()
 
 int ConsoleInterface::execute()
 {
+    QVector<QString> process_names = core->getProcNames();
+
+    foreach (QString name, process_names)
+        qDebug() << name;
+
     return qapp.exec();
 }
 

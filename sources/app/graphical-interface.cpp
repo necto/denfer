@@ -21,7 +21,7 @@ GraphicalInterface::GraphicalInterface( int argc, char** argv)
 
 GraphicalInterface::~GraphicalInterface()
 {
-    delete window;
+    MainWindowIface::destroy( window);
 }
 
 int GraphicalInterface::execute()

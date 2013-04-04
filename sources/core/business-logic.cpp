@@ -11,9 +11,24 @@
 namespace core
 {
 
-QVector<QString> BusinessLogic::filterSmth( QVector<QString> procs)
+BusinessLogic::BusinessLogic()
 {
-    return procs;
+    procs = ProcessListIface::create();
+}
+
+BusinessLogic::~BusinessLogic()
+{
+    ProcessListIface::destroy( procs);
+}
+
+QVector<QString> BusinessLogic::filterSmth( QVector<QString> names)
+{
+    return names;
+}
+
+QVector<QString> BusinessLogic::getProcNames()
+{
+    return filterSmth( procs->getProcessNames());
 }
 
 BusinessLogicIface* BusinessLogicIface::create()
