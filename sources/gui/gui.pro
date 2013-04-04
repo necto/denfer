@@ -3,6 +3,5 @@
 }
 
 SOURCES += *.cpp
-HEADERS += *.hpp
 
 FORMS += *.ui

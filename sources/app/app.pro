@@ -1,3 +1,5 @@
+QT += script
+
 TEMPLATE = app
 
 OBJECTS_DIR = ../../bin/objects
@@ -13,4 +15,3 @@ SOURCES += *.cpp
 
 LIBS += -L../../bin/libs
 LIBS += -lgui -lcore -lproc
-

@@ -7,14 +7,28 @@
 
 #pragma once
 
+#include <QtCore>
+#include <QtScript/QScriptEngine>
 #include "user-interface.hpp"
 
 namespace app
 {
 
-class ConsoleInterface: public UserInterface
+class ConsoleInterface: public QObject, public UserInterface
 {
+    Q_OBJECT
+
     QCoreApplication qapp;
+    QScriptEngine script;
+
+    bool done;
+    int result;
+
+    void repl();
+
+public slots:
+    void exit();
+
 public:
     ConsoleInterface( int argc, char** argv);
     ~ConsoleInterface();
