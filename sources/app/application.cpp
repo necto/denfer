@@ -1,5 +1,5 @@
 /*
- * Implementation of application Interface
+ * Implementation of the main application class
  */
 /**
  * Copyright 2013 Denfer team. See http://github.com/necto/denfer
@@ -10,6 +10,8 @@
 #include <QtGui>
 #include <QDebug>
 #include "application.hpp"
+#include "console-interface.hpp"
+#include "graphical-interface.hpp"
 
 namespace app
 {
@@ -17,45 +19,26 @@ namespace app
 Application::Application( int argc, char** argv)
 {
     detectMode( argc, argv);
-    
-    if ( mode == GUI)
-        qapp = new QApplication( argc, argv);
-    else
-        qapp = new QCoreApplication( argc, argv);
 
+    if ( mode == GUI)
+        face = new GraphicalInterface( argc, argv);
+    else
+        face = new ConsoleInterface( argc, argv);
     procs = ProcessListIface::create();
     bl = BusinessLogicIface::create();
-    if ( mode == GUI)
-    {
-        window = MainWindowIface::create( argc, argv);
-        window->showWindow();
-    }
 }
 
 Application::~Application()
 {
-    if ( mode == GUI)
-    {
-        MainWindowIface::destroy( window);
-    }
     BusinessLogicIface::destroy( bl);
     ProcessListIface::destroy( procs);
-    
-    delete qapp;
+    delete face;
 }
 
 int Application::execute()
 {
     QVector<QString> process_names = bl->filterSmth( procs->getProcessNames());
-    if ( mode == GUI)
-    {
-        // Not yet implemented
-    } else
-    {
-        Q_FOREACH( const QString& name, process_names)
-            qDebug() << name <<"\n";
-    }
-    return qapp->exec();
+    return face->execute();
 }
 
 void Application::detectMode( int argc, char** argv)

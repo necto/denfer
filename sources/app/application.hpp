@@ -7,11 +7,10 @@
 
 #pragma once
 
+#include "user-interface.hpp"
 #include "gui/iface.hpp"
 #include "proc/iface.hpp"
 #include "core/iface.hpp"
-
-class QCoreApplication;
 
 namespace app
 {
@@ -22,8 +21,7 @@ using core::BusinessLogicIface;
 
 class Application
 {
-    QCoreApplication* qapp;
-    MainWindowIface* window;
+    UserInterface* face;
     ProcessListIface* procs;
     BusinessLogicIface* bl;
 
