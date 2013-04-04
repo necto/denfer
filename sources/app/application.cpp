@@ -5,6 +5,7 @@
  * Copyright 2013 Denfer team. See http://github.com/necto/denfer
  */
 
+#include <string.h>
 #include <QtCore>
 #include <QtGui>
 #include <QDebug>
@@ -14,9 +15,14 @@ namespace app
 {
 
 Application::Application( int argc, char** argv)
-    :qapp(argc, argv)
 {
-    detectMode( qapp.arguments());
+    detectMode( argc, argv);
+    
+    if ( mode == GUI)
+        qapp = new QApplication( argc, argv);
+    else
+        qapp = new QCoreApplication( argc, argv);
+
     procs = ProcessListIface::create();
     bl = BusinessLogicIface::create();
     if ( mode == GUI)
@@ -34,6 +40,8 @@ Application::~Application()
     }
     BusinessLogicIface::destroy( bl);
     ProcessListIface::destroy( procs);
+    
+    delete qapp;
 }
 
 int Application::execute()
@@ -47,15 +55,20 @@ int Application::execute()
         Q_FOREACH( const QString& name, process_names)
             qDebug() << name <<"\n";
     }
-    return qapp.exec();
+    return qapp->exec();
 }
 
-void Application::detectMode( QStringList args)
+void Application::detectMode( int argc, char** argv)
 {
-    if ( -1 == args.indexOf( "c"))
-        mode = GUI;
-    else
-        mode = CLI;
+    mode = GUI;
+    for (int i = 0; i < argc; ++i)
+    {
+        if ( 0 == strcmp( "c", argv[i]) )
+        {
+            mode = CLI;
+            break;
+        }
+    }
 }
 
 }; //namespace app

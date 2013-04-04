@@ -7,12 +7,11 @@
 
 #pragma once
 
-#include <QtCore>
-#include <QApplication>
-#include <QStringList>
 #include "gui/iface.hpp"
 #include "proc/iface.hpp"
 #include "core/iface.hpp"
+
+class QCoreApplication;
 
 namespace app
 {
@@ -23,7 +22,7 @@ using core::BusinessLogicIface;
 
 class Application
 {
-    QApplication qapp;
+    QCoreApplication* qapp;
     MainWindowIface* window;
     ProcessListIface* procs;
     BusinessLogicIface* bl;
@@ -40,7 +39,7 @@ public:
 
     int execute();
 
-    void detectMode( QStringList args);
+    void detectMode( int argc, char** argv);
 };
 
 }; //namespace app

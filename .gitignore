@@ -4,3 +4,5 @@
 *~
 Makefile
 bin
+moc_*
+ui_*
