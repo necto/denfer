@@ -21,12 +21,12 @@ BusinessLogic::~BusinessLogic()
     ProcessListIface::destroy( procs);
 }
 
-QVector<QString> BusinessLogic::filterSmth( QVector<QString> names)
+QList<QString> BusinessLogic::filterSmth( QList<QString> names)
 {
     return names;
 }
 
-QVector<QString> BusinessLogic::getProcNames()
+QList<QString> BusinessLogic::getProcNames()
 {
     return filterSmth( procs->getProcessNames());
 }

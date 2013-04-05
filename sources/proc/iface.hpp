@@ -8,7 +8,7 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtCore/QVector>
+#include <QtCore/QList>
 #include <QtCore/QtGlobal>
 
 namespace proc
@@ -17,7 +17,7 @@ namespace proc
 class X_EXPORT ProcessListIface
 {
 public:
-    virtual QVector<QString> getProcessNames() = 0;
+    virtual QList<QString> getProcessNames() = 0;
 
     static ProcessListIface* create();
     static bool destroy( ProcessListIface* ref);

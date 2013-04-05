@@ -9,6 +9,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QVector>
+#include <QtCore/QList>
 
 namespace core
 {
@@ -16,8 +17,8 @@ namespace core
 class X_EXPORT BusinessLogicIface
 {
 public:
-    virtual QVector<QString> filterSmth( QVector<QString> procs) = 0;
-    virtual QVector<QString> getProcNames() = 0;
+    virtual QList<QString> filterSmth( QList<QString> procs) = 0;
+    virtual QList<QString> getProcNames() = 0;
 
     static BusinessLogicIface* create();
     static bool destroy( BusinessLogicIface* ref);

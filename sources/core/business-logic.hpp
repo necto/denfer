@@ -24,9 +24,9 @@ public:
     BusinessLogic();
     ~BusinessLogic();
     
-    QVector<QString> filterSmth( QVector<QString> procs);
+    QList<QString> filterSmth( QList<QString> procs);
 
-    QVector<QString> getProcNames();
+    QList<QString> getProcNames();
 };
 
 }; //namespace core

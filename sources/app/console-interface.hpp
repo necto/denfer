@@ -27,7 +27,8 @@ class ConsoleInterface: public QObject, public UserInterface
     void repl();
 
 public slots:
-    void exit();
+    void exit( int res = 0);
+    QList<QString> getProcNames();
 
 public:
     ConsoleInterface( int argc, char** argv);

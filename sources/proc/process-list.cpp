@@ -15,9 +15,11 @@ ProcessList::~ProcessList()
 {
 }
 
-QVector<QString> ProcessList::getProcessNames()
+QList<QString> ProcessList::getProcessNames()
 {
-    QVector<QString> ret(10, QString("just another process"));
+    QList<QString> ret;
+    for (int i = 0; i < 10; ++i)
+        ret.append(QString("just another process"));
     return ret;
 }
 

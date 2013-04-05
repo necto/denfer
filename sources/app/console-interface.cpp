@@ -11,6 +11,8 @@
 #include <QtCore/QFile>
 #include "console-interface.hpp"
 
+Q_DECLARE_METATYPE(QList<QString>)
+
 namespace app
 {
 
@@ -50,20 +52,23 @@ void ConsoleInterface::repl()
     }
 }
 
-void ConsoleInterface::exit()
+void ConsoleInterface::exit( int rez)
 {
     done = true;
+    result = rez;
+}
+
+QList<QString> ConsoleInterface::getProcNames()
+{
+    return core->getProcNames();
 }
 
 int ConsoleInterface::execute()
 {
-    QVector<QString> process_names = core->getProcNames();
-
-    foreach (QString name, process_names)
-        qDebug() << name;
-    
     QScriptValue app = script.newQObject( this);
     script.globalObject().setProperty( "app", app);
+
+    qScriptRegisterSequenceMetaType<QList<QString> > (&script);
 
     repl();
 
