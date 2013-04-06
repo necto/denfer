@@ -17,7 +17,7 @@ class ProcessList : public ProcessListIface
 public:
     virtual ~ProcessList();
 
-    QList<QString> getProcessNames();
+    QList<Process> getProcesses();
 };
 
 }; //namespace proc

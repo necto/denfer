@@ -28,7 +28,19 @@ QList<QString> BusinessLogic::filterSmth( QList<QString> names)
 
 QList<QString> BusinessLogic::getProcNames()
 {
-    return filterSmth( procs->getProcessNames());
+    QList<QString> ret;
+    QList<Process> total = getProcs();
+    
+    for ( QList<Process>::const_iterator i = total.begin();
+          i != total.end(); ++i )
+        ret.append( i->name);
+
+    return filterSmth( ret);
+}
+
+QList<Process> BusinessLogic::getProcs()
+{
+    return procs->getProcesses();
 }
 
 BusinessLogicIface* BusinessLogicIface::create()

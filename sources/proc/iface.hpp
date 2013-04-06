@@ -14,10 +14,16 @@
 namespace proc
 {
 
+struct X_EXPORT Process
+{
+    QString name;
+    int id;
+};
+
 class X_EXPORT ProcessListIface
 {
 public:
-    virtual QList<QString> getProcessNames() = 0;
+    virtual QList<Process> getProcesses() = 0;
 
     static ProcessListIface* create();
     static bool destroy( ProcessListIface* ref);

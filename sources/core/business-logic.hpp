@@ -27,6 +27,7 @@ public:
     QList<QString> filterSmth( QList<QString> procs);
 
     QList<QString> getProcNames();
+    QList<Process> getProcs();
 };
 
 }; //namespace core

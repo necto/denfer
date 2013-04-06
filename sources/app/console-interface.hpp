@@ -14,6 +14,8 @@
 namespace app
 {
 
+using proc::Process;
+
 class ConsoleInterface: public QObject, public UserInterface
 {
     Q_OBJECT
@@ -29,6 +31,7 @@ class ConsoleInterface: public QObject, public UserInterface
 public slots:
     void exit( int res = 0);
     QList<QString> getProcNames();
+    QList<proc::Process> getProcs();
 
 public:
     ConsoleInterface( int argc, char** argv);
