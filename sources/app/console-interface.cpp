@@ -68,6 +68,45 @@ void ConsoleInterface::repl()
     }
 }
 
+void ConsoleInterface::interpretFile( QString fname)
+{
+    QFile file( fname);
+    if ( file.open( QFile::ReadOnly | QFile::Text) )
+    {
+        QTextStream in(&file);
+        QString code = "";
+        int line = 0;
+
+        while ( !in.atEnd() )
+        {
+            code += in.readLine() + "\n";
+            ++line;
+            if ( script.canEvaluate( code) )
+            {
+                QScriptValue val = script.evaluate( code, fname, line);
+                if ( val.isError() )
+                {
+                    qDebug() << val.toString() <<"at " <<line <<" " <<fname;
+                }
+                code = "";
+            }
+        }
+        file.close();
+    }
+    else
+    {
+        qDebug() << "Can't open file " << fname <<" : " << file.error() << "see QFile::FileError";
+    }
+}
+
+void ConsoleInterface::load( QString name)
+{
+    QScriptContext* ctx = script.currentContext();
+    ctx->setActivationObject( ctx->parentContext()->activationObject());
+    ctx->setThisObject( ctx->parentContext()->thisObject());
+    interpretFile( name);
+}
+
 void ConsoleInterface::exit( int rez)
 {
     done = true;

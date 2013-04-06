@@ -27,11 +27,13 @@ class ConsoleInterface: public QObject, public UserInterface
     int result;
 
     void repl();
+    void interpretFile( QString fname);
 
 public slots:
     void exit( int res = 0);
     QList<QString> getProcNames();
     QList<proc::Process> getProcs();
+    void load( QString fname);
 
 public:
     ConsoleInterface( int argc, char** argv);
