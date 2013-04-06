@@ -1,7 +1,7 @@
 ### Description
 The denfer is an educational project MIPT students as a part of the course "Modern programming technologies". 
 It is a dynamic profiler based on QT, that can attach to any running process, count it's events and display the
-statistics in a pretty grafical interface.
+statistics in a pretty grafical interface, or in pure terminal way through ECMAScript-based interaction.
 
 ### Specifications:
 
@@ -13,6 +13,7 @@ Our aim is the profiler, which:
  * Installation might require superuser rights
  * Can attach to any running process
  * Has a GUI
+ * Supports scripting (through Qt ECMAScript engine)
 *  System:
  * Uses Qt
  * Can work on both linux & windows basic and extended perf interfaces
