@@ -12,8 +12,8 @@
 namespace app
 {
 
-GraphicalInterface::GraphicalInterface( int argc, char** argv)
-    :qapp( argc, argv)
+GraphicalInterface::GraphicalInterface( BusinessLogicIface* core_, int argc, char** argv)
+    :UserInterface( core_), qapp( argc, argv)
 {
     window = MainWindowIface::create( argc, argv);
     window->showWindow();

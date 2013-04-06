@@ -18,10 +18,11 @@ class UserInterface
 {
 protected:
     BusinessLogicIface* core;
-public:
-    virtual ~UserInterface(){};
 
-    inline void setCore( BusinessLogicIface* c) { core = c; }
+public:
+    UserInterface( BusinessLogicIface* core_)
+        :core( core_){};
+    virtual ~UserInterface(){}
 
     virtual int execute() = 0;
 };

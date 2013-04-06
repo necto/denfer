@@ -19,10 +19,12 @@ using gui::MainWindowIface;
 
 class GraphicalInterface : public UserInterface
 {
+private:
     QApplication qapp;
     MainWindowIface* window;
+
 public:
-    GraphicalInterface( int argc, char** argv);
+    GraphicalInterface( BusinessLogicIface* core, int argc, char** argv);
     ~GraphicalInterface();
 
     virtual int execute();

@@ -19,19 +19,19 @@ namespace app
 Application::Application( int argc, char** argv)
 {
     detectMode( argc, argv);
+    
+    core = BusinessLogicIface::create();
 
     if ( mode == GUI)
-        face = new GraphicalInterface( argc, argv);
+        face = new GraphicalInterface( core, argc, argv);
     else
-        face = new ConsoleInterface( argc, argv);
-    core = BusinessLogicIface::create();
-    face->setCore( core);
+        face = new ConsoleInterface( core, argc, argv);
 }
 
 Application::~Application()
 {
-    BusinessLogicIface::destroy( core);
     delete face;
+    BusinessLogicIface::destroy( core);
 }
 
 int Application::execute()
