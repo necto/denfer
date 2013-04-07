@@ -54,7 +54,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Processesl</string>
+     <string>Processes</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
