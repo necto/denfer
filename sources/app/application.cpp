@@ -17,8 +17,9 @@ namespace app
 {
 
 Application::Application( int argc, char** argv)
+    :args( argc, argv)
 {
-    detectMode( argc, argv);
+    detectMode();
     
     core = BusinessLogicIface::create();
 
@@ -39,17 +40,12 @@ int Application::execute()
     return face->execute();
 }
 
-void Application::detectMode( int argc, char** argv)
+void Application::detectMode()
 {
-    mode = GUI;
-    for (int i = 0; i < argc; ++i)
-    {
-        if ( 0 == strcmp( "c", argv[i]) )
-        {
-            mode = CLI;
-            break;
-        }
-    }
+    if ( args.isConsole() )
+        mode = CLI;
+    else
+        mode = GUI;
 }
 
 }; //namespace app

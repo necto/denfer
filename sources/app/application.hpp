@@ -10,6 +10,7 @@
 #include "user-interface.hpp"
 #include "gui/iface.hpp"
 #include "core/iface.hpp"
+#include "cl-arguments.hpp"
 
 namespace app
 {
@@ -21,6 +22,7 @@ class Application
 {
     UserInterface* face;
     BusinessLogicIface* core;
+    CLArguments args;
 
     enum
     {
@@ -34,7 +36,7 @@ public:
 
     int execute();
 
-    void detectMode( int argc, char** argv);
+    void detectMode();
 };
 
 }; //namespace app
