@@ -7,17 +7,25 @@
 
 #pragma once
 
+#include <QString>
+#include <QList>
+
 namespace app
 {
 
 class CLArguments
 {
+private:
     bool consolep;
+    QList<QString> files;
+
+    void rememberIfFile( char* name);
 
 public:
     CLArguments( int argc, char** argv);
 
-    bool isConsole() const { return consolep; };
+    bool isConsole() const { return consolep; }
+    const QList<QString>& getFiles() const { return files; }
 };
 
 }; //namespace app

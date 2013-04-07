@@ -22,16 +22,18 @@ Application::Application( int argc, char** argv)
     detectMode();
     
     core = BusinessLogicIface::create();
+    m = new Model( core);
 
     if ( mode == GUI)
-        face = new GraphicalInterface( core, argc, argv);
+        face = new GraphicalInterface( m, argc, argv);
     else
-        face = new ConsoleInterface( core, argc, argv);
+        face = new ConsoleInterface( m, argc, argv);
 }
 
 Application::~Application()
 {
     delete face;
+    delete m;
     BusinessLogicIface::destroy( core);
 }
 

@@ -24,7 +24,7 @@ private:
     MainWindowIface* window;
 
 public:
-    GraphicalInterface( BusinessLogicIface* core, int argc, char** argv);
+    GraphicalInterface( Model* m_, int argc, char** argv);
     ~GraphicalInterface();
 
     virtual int execute();

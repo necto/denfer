@@ -10,10 +10,10 @@
 namespace app
 {
 
-ConsoleInterface::ConsoleInterface( BusinessLogicIface* core_, int argc, char** argv)
-    :UserInterface( core_), qapp( argc, argv), m( core_)
+ConsoleInterface::ConsoleInterface( Model* m_, int argc, char** argv)
+    :UserInterface( m_), qapp( argc, argv), m( m_)
 {
-    script.init( &m);
+    script.init( m);
 }
 
 ConsoleInterface::~ConsoleInterface()

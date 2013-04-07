@@ -7,21 +7,19 @@
 
 #pragma once
 
-#include "core/iface.hpp"
+#include "model.hpp"
 
 namespace app
 {
 
-using core::BusinessLogicIface;
-
 class UserInterface
 {
 protected:
-    BusinessLogicIface* core;
+    Model* m;
 
 public:
-    UserInterface( BusinessLogicIface* core_)
-        :core( core_){};
+    UserInterface( Model* m_)
+        :m( m_){};
     virtual ~UserInterface(){}
 
     virtual int execute() = 0;

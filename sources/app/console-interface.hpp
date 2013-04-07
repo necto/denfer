@@ -21,10 +21,10 @@ class ConsoleInterface: public UserInterface
 {
     QCoreApplication qapp;
     Interpreter script;
-    Model m;
+    Model* m;
 
 public:
-    ConsoleInterface( BusinessLogicIface* core_, int argc, char** argv);
+    ConsoleInterface( Model* m_, int argc, char** argv);
     ~ConsoleInterface();
 
     virtual int execute();

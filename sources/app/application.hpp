@@ -11,6 +11,7 @@
 #include "gui/iface.hpp"
 #include "core/iface.hpp"
 #include "cl-arguments.hpp"
+#include "model.hpp"
 
 namespace app
 {
@@ -23,6 +24,7 @@ class Application
     UserInterface* face;
     BusinessLogicIface* core;
     CLArguments args;
+    Model* m;
 
     enum
     {

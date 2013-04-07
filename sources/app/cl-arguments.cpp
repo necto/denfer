@@ -6,6 +6,7 @@
  */
 
 #include <string.h>
+#include <QFile>
 #include "cl-arguments.hpp"
 
 namespace app
@@ -14,14 +15,22 @@ namespace app
 CLArguments::CLArguments( int argc, char** argv)
 {
     consolep = false;
-    for (int i = 0; i < argc; ++i)
+    for ( int i = 0; i < argc; ++i )
     {
         if ( 0 == strcmp( "c", argv[i]) )
         {
             consolep = true;
-            break;
         }
+
+        if ( i > 0 )//Don't take the self into account
+            rememberIfFile( argv[i]);
     }
+}
+
+void CLArguments::rememberIfFile( char* name)
+{
+    if ( QFile::exists( name) )
+        files.append( name);
 }
 
 }; //namespace app
