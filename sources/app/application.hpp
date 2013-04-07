@@ -19,8 +19,6 @@ using core::BusinessLogicIface;
 
 class Application : public QObject
 {
-    Q_OBJECT
-
     UserInterface* face;
     BusinessLogicIface* core;
     CLArguments args;
@@ -31,12 +29,6 @@ class Application : public QObject
         CLI,
         GUI
     } mode;
-
-protected:
-    virtual void timerEvent(QTimerEvent *) {
-        QList<QString> list = core->getProcNames();
-        this->face->update(list);
-    }
 
 public:
     Application( int argc, char** argv);

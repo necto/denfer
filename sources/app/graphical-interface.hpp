@@ -17,18 +17,26 @@ namespace app
 
 using gui::MainWindowIface;
 
-class GraphicalInterface : public UserInterface
+class GraphicalInterface : public QObject, public UserInterface
 {
+    Q_OBJECT
+
 private:
     QApplication qapp;
     MainWindowIface* window;
+
+protected:
+    virtual void timerEvent(QTimerEvent *) {
+        QList<QString> list = this->m->getProcNames();
+        update(list);
+    }
 
 public:
     GraphicalInterface( Model* m_, int argc, char** argv);
     ~GraphicalInterface();
 
     virtual int execute();
-    virtual void update(QList<QString> list);
+    void update(QList<QString> list);
 };
 
 }; //namespace app

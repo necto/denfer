@@ -25,9 +25,4 @@ int ConsoleInterface::execute()
     return getScript()->repl();
 }
 
-void ConsoleInterface::update(QList<QString> list)
-{
-    // dummy
-}
-
 }; //namespace app

@@ -28,8 +28,6 @@ Application::Application( int argc, char** argv)
         face = new ConsoleInterface( m, argc, argv);
     
     loadScripts();
-
-    startTimer(1000);
 }
 
 Application::~Application()

@@ -17,6 +17,8 @@ GraphicalInterface::GraphicalInterface( Model* m_, int argc, char** argv)
 {
     window = MainWindowIface::create( argc, argv);
     window->showWindow();
+
+    startTimer(1000);
 }
 
 GraphicalInterface::~GraphicalInterface()

@@ -25,7 +25,6 @@ public:
     ~ConsoleInterface();
 
     virtual int execute();
-    virtual void update(QList<QString> list);
 };
 
 }; //namespace app

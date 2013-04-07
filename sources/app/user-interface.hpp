@@ -28,7 +28,6 @@ public:
     Interpreter* getScript();
 
     virtual int execute() = 0;
-    virtual void update(QList<QString> list) = 0;
 };
 
 }; //namespace app
