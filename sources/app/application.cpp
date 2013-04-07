@@ -6,8 +6,6 @@
  */
 
 #include <string.h>
-#include <QtCore>
-#include <QtGui>
 #include <QDebug>
 #include "application.hpp"
 #include "console-interface.hpp"
@@ -28,6 +26,9 @@ Application::Application( int argc, char** argv)
         face = new GraphicalInterface( m, argc, argv);
     else
         face = new ConsoleInterface( m, argc, argv);
+    
+    loadScripts();
+
 }
 
 Application::~Application()
@@ -48,6 +49,17 @@ void Application::detectMode()
         mode = CLI;
     else
         mode = GUI;
+}
+
+void Application::loadScripts()
+{
+    const QList<QString> & files = args.getFiles();
+
+    for ( QList<QString>::const_iterator i = files.begin();
+          i != files.end(); ++i )
+    {
+        face->getScript()->interpretFile( *i);
+    }
 }
 
 }; //namespace app

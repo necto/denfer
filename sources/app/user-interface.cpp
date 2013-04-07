@@ -11,7 +11,7 @@ namespace app
 {
 
 UserInterface::UserInterface( Model* m_)
-    :m( m_), script( 0)
+    :script( 0), m( m_)
 {
 }
 

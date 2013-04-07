@@ -8,7 +8,6 @@
 #pragma once
 
 #include "user-interface.hpp"
-#include "gui/iface.hpp"
 #include "core/iface.hpp"
 #include "cl-arguments.hpp"
 #include "model.hpp"
@@ -16,7 +15,6 @@
 namespace app
 {
 
-using gui::MainWindowIface;
 using core::BusinessLogicIface;
 
 class Application
@@ -39,6 +37,7 @@ public:
     int execute();
 
     void detectMode();
+    void loadScripts();
 };
 
 }; //namespace app
