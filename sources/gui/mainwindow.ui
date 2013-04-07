@@ -14,26 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QListView" name="Processes">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>151</width>
-      <height>421</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QListView" name="Functions">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>50</y>
-      <width>151</width>
-      <height>421</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
@@ -75,13 +55,58 @@
      <rect>
       <x>430</x>
       <y>20</y>
-      <width>71</width>
+      <width>101</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
      <string>Table of counters</string>
     </property>
+   </widget>
+   <widget class="QListWidget" name="Processes">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>40</y>
+      <width>151</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>dummy1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Dummy2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>dummy3</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QListWidget" name="Functions">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>40</y>
+      <width>151</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>DummyFunc1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>DummyFunc2</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

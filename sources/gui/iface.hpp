@@ -21,6 +21,7 @@ public:
     static bool destroy( MainWindowIface* ref);
 
     virtual void showWindow() = 0;
+    virtual void updateWindow(QList<QString> list) = 0;
 };
 
 }; //namespaceg gui

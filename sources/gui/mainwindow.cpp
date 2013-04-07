@@ -18,6 +18,13 @@ void MainWindow::showWindow()
     show();
 }
 
+void MainWindow::updateWindow(QList<QString> list)
+{
+    this->ui->Processes->clear();
+    QStringList* qlist = new QStringList(list);
+    this->ui->Processes->addItems(*qlist);
+}
+
 namespace gui
 {
 

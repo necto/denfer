@@ -17,6 +17,7 @@ public:
     ~MainWindow();
     
     virtual void showWindow();
+    virtual void updateWindow(QList<QString> list);
 private:
     Ui::MainWindow *ui;
 };

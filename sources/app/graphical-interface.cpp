@@ -29,4 +29,9 @@ int GraphicalInterface::execute()
     return qapp.exec();
 }
 
+void GraphicalInterface::update(QList<QString> list)
+{
+    this->window->updateWindow(list);
+}
+
 }; //namespace app

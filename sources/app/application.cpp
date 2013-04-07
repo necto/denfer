@@ -29,6 +29,7 @@ Application::Application( int argc, char** argv)
     
     loadScripts();
 
+    startTimer(1000);
 }
 
 Application::~Application()
