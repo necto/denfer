@@ -9,7 +9,6 @@
 
 #include <QtCore>
 #include "user-interface.hpp"
-#include "interpreter.hpp"
 #include "model.hpp"
 
 namespace app
@@ -20,8 +19,6 @@ using proc::Process;
 class ConsoleInterface: public UserInterface
 {
     QCoreApplication qapp;
-    Interpreter script;
-    Model* m;
 
 public:
     ConsoleInterface( Model* m_, int argc, char** argv);

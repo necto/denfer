@@ -12,9 +12,14 @@
 namespace app
 {
 
-Interpreter::Interpreter()
-    :model( 0)
+Interpreter::Interpreter( Model* m)
+    :model( m)
 {
+    QScriptValue app = script.newQObject( this);
+    script.globalObject().setProperty( "app", app);
+    
+    model->registerSelf( &script);
+    //TODO: find out who should delete these objects app, data?
 }
 
 Interpreter::~Interpreter()
@@ -92,16 +97,6 @@ void Interpreter::exit( int rez)
 {
     done = true;
     result = rez;
-}
-
-void Interpreter::init( Model* m)
-{
-    QScriptValue app = script.newQObject( this);
-    script.globalObject().setProperty( "app", app);
-
-    model = m;
-    model->registerSelf( &script);
-    //TODO: find out who should delete these objects app, data?
 }
 
 }; //namespace app

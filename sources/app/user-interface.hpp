@@ -8,19 +8,24 @@
 #pragma once
 
 #include "model.hpp"
+#include "interpreter.hpp"
 
 namespace app
 {
 
 class UserInterface
 {
+private:
+    Interpreter* script;
+    
 protected:
     Model* m;
 
 public:
-    UserInterface( Model* m_)
-        :m( m_){};
-    virtual ~UserInterface(){}
+    UserInterface( Model* m_);
+    virtual ~UserInterface();
+
+    Interpreter* getScript();
 
     virtual int execute() = 0;
 };

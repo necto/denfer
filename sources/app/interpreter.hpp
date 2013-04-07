@@ -29,10 +29,8 @@ public slots:
     void load( QString fname);
 
 public:
-    Interpreter();
+    Interpreter( Model* m);
     ~Interpreter();
-
-    void init( Model* m);
 
     int repl();
     void interpretFile( QString fname);

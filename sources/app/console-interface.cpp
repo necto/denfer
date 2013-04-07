@@ -6,14 +6,14 @@
  */
 
 #include "console-interface.hpp"
+#include "interpreter.hpp"
 
 namespace app
 {
 
 ConsoleInterface::ConsoleInterface( Model* m_, int argc, char** argv)
-    :UserInterface( m_), qapp( argc, argv), m( m_)
+    :UserInterface( m_), qapp( argc, argv)
 {
-    script.init( m);
 }
 
 ConsoleInterface::~ConsoleInterface()
@@ -22,7 +22,7 @@ ConsoleInterface::~ConsoleInterface()
 
 int ConsoleInterface::execute()
 {
-    return script.repl();
+    return getScript()->repl();
 }
 
 }; //namespace app
