@@ -7,5 +7,5 @@ unix {
     HEADERS += "linux/*.hpp"
 }
 
-SOURCES += \
-    dummy.cpp
+SOURCES += *.cpp
+HEADERS += *.hpp

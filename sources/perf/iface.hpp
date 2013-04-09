@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <QtCore>
 #include <QtCore/QVector>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
@@ -118,8 +119,9 @@ class CounterValues
  * 
  * @author Denis Anisimov
  */
-class PerfCounter
+class PerfCounter : public QObject
 {
+    Q_OBJECT
 public:
     /**
      * Start measuring of perf data
@@ -137,16 +139,22 @@ public:
     virtual void reset() = 0;
 
     /**
-     * Get counted values
-     * @return storage class.
-     */
-    virtual CounterValues* getValues() = 0;
-
-    /**
      * Virtual destructor to ensure proper deallocation
      * of implementation class.
      */
     virtual void destroy() = 0;
+
+public slots:
+    /**
+     * Slot to recieve value request signals.
+     */
+    virtual void requestValues() = 0;
+
+signals:
+    /**
+     * Signal to report results readiness.
+     */
+    virtual void valuesReady( CounterValues* values) = 0;
 };
 
 
