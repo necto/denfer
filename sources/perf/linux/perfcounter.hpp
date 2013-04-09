@@ -19,44 +19,7 @@ namespace lin
 
 class PerfCounterImpl : public PerfCounter
 {
-    Q_OBJECT
-public:
-    /**
-     * Start measuring of perf data
-     */
-    virtual void start();
-
-    /**
-     * Stop measuring of perf data
-     */
-    virtual void stop();
-
-    /**
-     * Clear internally collected data
-     */
-    virtual void reset();
-
-    /**
-     * Get counted values
-     * @return storage class.
-     */
-    virtual CounterValues* getValues();
-signals:
-    /**
-     * Signal for worker thread to start counting
-     */
-    void start_signal();
-
-    /**
-     * Signal for worker thread to start counting
-     */
-    void stop_signal();
-
-    /**
-     * Signal for worker thread to start counting
-     */
-    void reset_signal();
-
+    // Nothing to do here yet
 };
 
 }; // namespace lin

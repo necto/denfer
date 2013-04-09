@@ -144,12 +144,11 @@ public:
      */
     virtual void destroy() = 0;
 
-public slots:
     /**
-     * Slot to recieve value request signals.
+     * Make request of counted values.
+     * Result will be delivered via signal {@link valuesReady}.
      */
     virtual void requestValues() = 0;
-
 signals:
     /**
      * Signal to report results readiness.

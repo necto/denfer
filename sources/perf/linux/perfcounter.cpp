@@ -16,26 +16,7 @@ namespace perf
 namespace lin
 {
 
-void PerfCounterImpl::start()
-{
-
-}
-
-void PerfCounterImpl::stop()
-{
-
-}
-
-void PerfCounterImpl::reset()
-{
-
-}
-
-CounterValues* PerfCounterImpl::getValues()
-{
-
-}
-
+// Nothing to do here yet
 
 }; // namespace lin
 
