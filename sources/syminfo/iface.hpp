@@ -12,39 +12,43 @@
 #pragma once
 
 #include <QString>
-typedef QString symbolType;
+#include <QList>
+#include <cstdint>
 typedef void* addressType;
+typedef uint64_t addr_t;
+typedef uint64_t addrsize_t;
 
 /**
  * Struct of symbol
  */
-struct symbolType
+struct SymbolType
 {
-    /**
-     * Name of symbol
-     */
+    /** Name of symbol */
     QString name;
 
-    /**
-     * path to file
-     */
-    QString file;
+    /** address */
+    addr_t address;
 
-    /**
-     * line
-     */
-    int line;
+    /** length */
+    addrsize_t length;
+
+    /** Debug info */
+    debuginfo_t debug_info;
+
+    /** List of parent functions */
+    QList<SymbolType*> parents;
 };
 
 class SymbolTableInterface 
 {
 public:
     /**
-     * Initialize symbol table 
+     * Initialize and prepare SymbolTableInterface object
+     * Returns prepared object
      */
-    virtual bool initialize() = 0;
+    virtual static SymbolTableInterface create(QString) = 0;
 
-    virtual bool finalize() = 0;
+    virtual bool destroy() = 0;
 
     /** 
      * Returns number of symbols
