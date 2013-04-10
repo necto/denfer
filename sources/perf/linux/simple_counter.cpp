@@ -57,10 +57,6 @@ SimpleCounter::SimpleCounter( pid_t _pid, int msec) : pid( _pid)
     QObject::connect( thread, SIGNAL( started()), worker, SLOT( startCount()));
     QObject::connect( worker, SIGNAL( finished()), worker, SLOT( deleteLater()));
     QObject::connect( thread, SIGNAL( finished()), thread, SLOT( deleteLater()));
-    QObject::connect( this, SIGNAL( requestSignal()), worker, SLOT( getValues));
-
-    /* Forward readiness signal */
-    QObject::connect( worker, SIGNAL( valuesReady()), this, SIGNAL( valuesReady()));
 
     worker->moveToThread(thread);
 }
@@ -84,4 +80,4 @@ const QUuid SimpleCounter::uuid = QUuid( "{00000000-0000-0000-0000-000000000001}
 
 }; // namespace lin
 
-}; // namespace perf
+        }; // namespace perf

@@ -17,8 +17,9 @@ namespace perf
 namespace lin
 {
 
-class PerfCounterImpl : public PerfCounter
+class PerfCounterImpl : public PerfCounter, public QObject
 {
+    Q_OBJECT
     // Nothing to do here yet
 };
 

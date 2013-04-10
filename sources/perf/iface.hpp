@@ -119,9 +119,8 @@ class CounterValues
  * 
  * @author Denis Anisimov
  */
-class PerfCounter : public QObject
+class PerfCounter 
 {
-    Q_OBJECT
 public:
     /**
      * Start measuring of perf data
@@ -139,21 +138,16 @@ public:
     virtual void reset() = 0;
 
     /**
+     * Get counted values
+     * @return storage class.
+     */
+    virtual CounterValues* getValues() = 0;
+
+    /**
      * Virtual destructor to ensure proper deallocation
      * of implementation class.
      */
     virtual void destroy() = 0;
-
-    /**
-     * Make request of counted values.
-     * Result will be delivered via signal {@link valuesReady}.
-     */
-    virtual void requestValues() = 0;
-signals:
-    /**
-     * Signal to report results readiness.
-     */
-    virtual void valuesReady( CounterValues* values) = 0;
 };
 
 
