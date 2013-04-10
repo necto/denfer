@@ -47,7 +47,7 @@ public slots:
     void doCount();
 
     /**
-     * Cut currently counted data and pass it back.
+     * Cut currently counted data and pass it back
      */
     void getValues();
 
@@ -64,7 +64,7 @@ private:
     pid_t pid;
 };
 
-class SimpleCounter : public PerfCounter
+class SimpleCounter : public PerfCounterImpl
 {
 public:
     /**
@@ -84,13 +84,24 @@ public:
 
     void reset();
 
-    void requestValues();
+    CounterValues* getValues();
+public slots:
+    /**
+     * Slot to recieve worker thread results
+     */
+    void receiveValues( CounterValues* val);
+
 signals:
     /**
      * Signal to request counted values from worker thread.
      * Values are passed back through (@link valuesReady
      */
-    void requestSignal();
+    void valuesRequest();
+
+    /**
+     * Signal to report that values are received
+     */
+    void valuesReady();
 private:
     /**
      * Worker object to perform counting
@@ -107,6 +118,11 @@ private:
      * Pid to be traced
      */
     pid_t pid;
+
+    /**
+     * Values to return
+     */
+    CounterValues* values;
 };
 
 }; // namespace lin

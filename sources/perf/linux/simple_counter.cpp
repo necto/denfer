@@ -57,6 +57,10 @@ SimpleCounter::SimpleCounter( pid_t _pid, int msec) : pid( _pid)
     QObject::connect( thread, SIGNAL( started()), worker, SLOT( startCount()));
     QObject::connect( worker, SIGNAL( finished()), worker, SLOT( deleteLater()));
     QObject::connect( thread, SIGNAL( finished()), thread, SLOT( deleteLater()));
+    QObject::connect( this, SIGNAL( valuesRequest()), 
+                      worker, SLOT( getValues()));
+    QObject::connect( worker, SIGNAL( valuesReady( CounterValues*)), 
+                      this, SLOT( receiveValues( CounterValues*)));
 
     worker->moveToThread(thread);
 }
@@ -71,13 +75,26 @@ void SimpleCounter::stop()
     thread->quit();
 }
 
-void SimpleCounter::requestValues()
+CounterValues* SimpleCounter::getValues()
 {
-    emit requestSignal();
+    emit valuesRequest();
+
+    /* Run dummy event loop to wait for asynchronous signal */
+    QEventLoop loop;
+    QObject::connect( this, SIGNAL( valuesReady()), &loop, SLOT( quit()));
+    loop.exec();
+
+    return values;
+}
+
+void SimpleCounter::receiveValues( CounterValues* val)
+{
+    values = val;
+    emit valuesReady();
 }
 
 const QUuid SimpleCounter::uuid = QUuid( "{00000000-0000-0000-0000-000000000001}");
 
 }; // namespace lin
 
-        }; // namespace perf
+}; // namespace perf
