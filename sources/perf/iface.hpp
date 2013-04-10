@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <QtCore>
 #include <QtCore/QVector>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
@@ -118,7 +119,7 @@ class CounterValues
  * 
  * @author Denis Anisimov
  */
-class PerfCounter
+class PerfCounter 
 {
 public:
     /**

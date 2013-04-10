@@ -9,3 +9,4 @@
 #pragma once
 
 #include "perfmanager.hpp"
+#include "perfcounter.hpp"
