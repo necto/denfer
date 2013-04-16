@@ -13,55 +13,93 @@
 
 #include <QString>
 #include <QList>
+#include <set>
 #include <cstdint>
-typedef void* addressType;
-typedef uint64_t addr_t;
-typedef uint64_t addrsize_t;
+
+namespace syminfo
+{
+
+typedef void* addr_t;
+typedef size_t addrsize_t;
+typedef QList<Symbol*> SymbolList;
 
 /**
- * Struct of symbol
+ * Class Symbol
  */
-struct SymbolType
+class Symbol
 {
+private:
     /** Name of symbol */
-    QString name;
+    QString name_;
 
     /** address */
-    addr_t address;
+    addr_t address_;
 
     /** length */
-    addrsize_t length;
+    addrsize_t length_;
 
+#if 0
     /** Debug info */
-    debuginfo_t debug_info;
+    DebugInfo debug_info_;
 
     /** List of parent functions */
-    QList<SymbolType*> parents;
+    SymbolList parents_;
+#endif
+public:
+    inline QString name() const { return name_; }
+    inline addr_t address() const { return address_;}
+    inline addrsize_t length() const { return length_;}
+#if 0
+    inline DebugInfo debug_info() const { return debug_info_;}
+    inline const SymbolList& parents() const { return parents_;} 
+#endif 
+
+    inline bool operator<(const Symbol& S) const
+    {
+        return address_<S.address();
+    }
+
+    inline bool operator==( const Symbol& S) const
+    {
+        return address==S.address();
+    }
+
+    Symbol( const addr_t& addr, const addrsize_t& size, 
+            QString name = QString(""))
+    {
+        address_ = addr;
+        length_ = size;
+        name_ = name;
+    }
+
 };
 
-class SymbolTableInterface 
+typedef std::set<Symbol> SymbolSet;
+
+class SymbolTable
 {
 public:
     /**
      * Initialize and prepare SymbolTableInterface object
      * Returns prepared object
      */
-    virtual static SymbolTableInterface create(QString) = 0;
+    virtual static SymbolTable create(QString) = 0;
 
     virtual bool destroy() = 0;
 
-    /** 
-     * Returns number of symbols
-     */
+    /** Returns number of symbols */
     virtual int getNumberOfSymbols() = 0;
 
-    virtual void getListOfSymbols(symbolType* symbols) = 0;
+    /** Returns reference to SymbolList */
+    virtual SymbolSet& getSymbolList() = 0;
 
-    virtual int getNumberOfAddresses() = 0;
+    /* Returns Symbol with specific address */
+    virtual Symbol getSymbol(addr_t address) = 0;
 
-    virtual void getListOfAddresses(addressType* address) = 0;
+    /* Returns address of symbol */
+    virtual addr_t getAddress(Symbol symbol) = 0;
+}
 
-    virtual symbolType getSymbol(addressType address) = 0;
 
-    virtual addressType getAddress(symbolType symbol) = 0;
+
 }
