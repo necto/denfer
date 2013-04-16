@@ -14,6 +14,10 @@
 #include <QThread>
 #include <QTimer>
 #include <sys/types.h>
+#include <sys/ptrace.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <sys/user.h>
 
 namespace perf
 {
@@ -64,8 +68,9 @@ private:
     pid_t pid;
 };
 
-class SimpleCounter : public PerfCounterImpl
+class SimpleCounter : public QObject, public PerfCounterImpl
 {
+    Q_OBJECT
 public:
     /**
      * UUID of simple counter
