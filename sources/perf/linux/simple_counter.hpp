@@ -64,8 +64,9 @@ private:
     pid_t pid;
 };
 
-class SimpleCounter : public PerfCounterImpl
+class SimpleCounter : public QObject, public PerfCounterImpl
 {
+    Q_OBJECT
 public:
     /**
      * UUID of simple counter
