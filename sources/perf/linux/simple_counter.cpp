@@ -24,11 +24,15 @@ SimpleCounterWorker::SimpleCounterWorker( pid_t _pid) : QTimer(), pid( _pid)
 
 void SimpleCounterWorker::startCount()
 {
-    // Do ptrace attach
     /**
      * Note: at this point worker must be already incapsulated
      * into separate thread to ensure proper ptrace_attach.
      */
+    long ptrace_ret = ptrace(PTRACE_ATTACH, pid,
+                             NULL, NULL);
+    //FIXME: add error processing here
+    wait(NULL);
+    ptrace(PTRACE_CONT, pid, NULL, NULL);
 
     /* Start timer */
     this->start();
@@ -36,7 +40,13 @@ void SimpleCounterWorker::startCount()
 
 void SimpleCounterWorker::doCount()
 {
-    // Do ptrace peekdata of RIP
+    struct user_regs_struct regs;
+
+    ptrace(PTRACE_GETREGS, pid,                                                                                                                                                                  
+            NULL, &regs);                                                                                                                                                                                    
+    //FIXME: add error processing here
+    ptrace(PTRACE_CONT, pid,                                                                                                                                                                     
+            NULL, NULL);
 }
 
 void SimpleCounterWorker::getValues()
