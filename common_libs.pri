@@ -11,6 +11,7 @@ DEFINES += "X_EXPORT=Q_DECL_EXPORT"
 # from the source files.
 OBJECTS_DIR = ../../bin/objects
 DESTDIR = ../../bin/libs
+DLLDESTDIR = ../../bin
 
 # Specify source and header files location
 #SOURCES = *.cpp
