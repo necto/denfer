@@ -13,12 +13,10 @@ namespace core
 
 BusinessLogic::BusinessLogic()
 {
-    procs = ProcessListIface::create();
 }
 
 BusinessLogic::~BusinessLogic()
 {
-    ProcessListIface::destroy( procs);
 }
 
 QList<QString> BusinessLogic::filterSmth( QList<QString> names)
@@ -26,21 +24,15 @@ QList<QString> BusinessLogic::filterSmth( QList<QString> names)
     return names;
 }
 
-QList<QString> BusinessLogic::getProcNames()
+QList<QString> BusinessLogic::getProcNames( QList<Process> procs)
 {
     QList<QString> ret;
-    QList<Process> total = getProcs();
     
-    for ( QList<Process>::const_iterator i = total.begin();
-          i != total.end(); ++i )
+    for ( QList<Process>::const_iterator i = procs.begin();
+          i != procs.end(); ++i )
         ret.append( i->name);
 
     return filterSmth( ret);
-}
-
-QList<Process> BusinessLogic::getProcs()
-{
-    return procs->getProcesses();
 }
 
 BusinessLogicIface* BusinessLogicIface::create()

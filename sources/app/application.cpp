@@ -19,8 +19,7 @@ Application::Application( int argc, char** argv)
 {
     detectMode();
     
-    core = BusinessLogicIface::create();
-    m = new Model( core);
+    m = new Model;
 
     if ( mode == GUI)
         face = new GraphicalInterface( m, argc, argv);
@@ -34,7 +33,6 @@ Application::~Application()
 {
     delete face;
     delete m;
-    BusinessLogicIface::destroy( core);
 }
 
 int Application::execute()

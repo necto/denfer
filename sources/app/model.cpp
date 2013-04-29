@@ -12,9 +12,11 @@
 #include <QString>
 #include <QtScript/QScriptEngine>
 
-Q_DECLARE_METATYPE(QList<QString>)
-Q_DECLARE_METATYPE(proc::Process)
-Q_DECLARE_METATYPE(QList<proc::Process>)
+Q_DECLARE_METATYPE( QList<QString>)
+Q_DECLARE_METATYPE( proc::Process)
+Q_DECLARE_METATYPE( QList<proc::Process>)
+Q_DECLARE_METATYPE( syminfo::Symbol)
+Q_DECLARE_METATYPE( QList<syminfo::Symbol>)
 
 namespace app
 {
@@ -33,26 +35,64 @@ void processFromScriptVal( const QScriptValue &obj, proc::Process &p)
     p.id = obj.property("id").toInt32();
 }
 
-Model::Model( BusinessLogicIface* core_)
-    :core( core_)
+QScriptValue symbolToScriptVal( QScriptEngine *engine, const syminfo::Symbol& s)
 {
+    QScriptValue obj = engine->newObject();
+    obj.setProperty( "name", s.name());
+    obj.setProperty( "address", s.address());
+    obj.setProperty( "length", s.length());
+    return obj;
+}
+
+void symbolFromScriptVal( const QScriptValue &obj, syminfo::Symbol& s)
+{
+    s.setName( obj.property("name").toString());
+    s.setAddress( obj.property("address").toInt32());
+    s.setLength( obj.property("length").toInt32());
+}
+
+Model::Model()
+{
+    core = BusinessLogicIface::create();
+    procs = ProcessListIface::create();
+    symbols = SymbolTableIface::create("noname");
+}
+
+Model::~Model()
+{
+    BusinessLogicIface::destroy( core);
+    ProcessListIface::destroy( procs);
+    SymbolTableIface::destroy( symbols);
 }
 
 QList<QString> Model::getProcNames()
 {
-    return core->getProcNames();
+    return core->getProcNames( getProcs());
 }
 
 QList<Process> Model::getProcs()
 {
-    return core->getProcs();
+    return procs->getProcesses();//core->getProcs();
+}
+
+QList<Symbol> Model::getProcFunctions()
+{
+    return symbols->getSymbolList().toList();
+}
+
+bool Model::attachToProcess( int id)
+{
+    (void)id;
+    return false;
 }
 
 void Model::registerSelf( QScriptEngine* eng)
 {
     qScriptRegisterSequenceMetaType<QList<QString> > (eng);
     qScriptRegisterMetaType( eng, processToScriptVal, processFromScriptVal);
+    qScriptRegisterMetaType( eng, symbolToScriptVal, symbolFromScriptVal);
     qScriptRegisterSequenceMetaType<QList<proc::Process> > (eng);
+    qScriptRegisterSequenceMetaType<QList<syminfo::Symbol> > (eng);
 
     QScriptValue data = eng->newQObject( this);
     eng->globalObject().setProperty( "m", data);

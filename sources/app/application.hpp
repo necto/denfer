@@ -20,7 +20,6 @@ using core::BusinessLogicIface;
 class Application : public QObject
 {
     UserInterface* face;
-    BusinessLogicIface* core;
     CLArguments args;
     Model* m;
 

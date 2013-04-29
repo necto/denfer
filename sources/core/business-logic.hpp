@@ -7,18 +7,13 @@
 
 #pragma once
 
-#include <QtGui>
 #include "iface.hpp"
-#include "proc/iface.hpp"
 
 namespace core
 {
 
-using proc::ProcessListIface;
-
 class BusinessLogic :public BusinessLogicIface
 {
-    ProcessListIface* procs;
 
 public:
     BusinessLogic();
@@ -26,8 +21,7 @@ public:
     
     QList<QString> filterSmth( QList<QString> procs);
 
-    QList<QString> getProcNames();
-    QList<Process> getProcs();
+    QList<QString> getProcNames( QList<Process> procs);
 };
 
 }; //namespace core

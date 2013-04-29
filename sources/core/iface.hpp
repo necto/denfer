@@ -21,8 +21,7 @@ class X_EXPORT BusinessLogicIface
 {
 public:
     virtual QList<QString> filterSmth( QList<QString> procs) = 0;
-    virtual QList<QString> getProcNames() = 0;
-    virtual QList<Process> getProcs() = 0;
+    virtual QList<QString> getProcNames( QList<Process> procs) = 0;
 
     static BusinessLogicIface* create();
     static bool destroy( BusinessLogicIface* ref);

@@ -10,6 +10,7 @@
 
 #include <QObject>
 #include "core/iface.hpp"
+#include "syminfo/iface.hpp"
 
 class QScriptEngine;
 
@@ -17,20 +18,34 @@ namespace app
 {
 
 using core::BusinessLogicIface;
+using proc::ProcessListIface;
 using proc::Process;
+using syminfo::SymbolTableIface;
+using syminfo::Symbol;
+using syminfo::SymbolSet;
 
 class Model: public QObject
 {
     Q_OBJECT
 
     BusinessLogicIface* core;
+    ProcessListIface* procs;
+    SymbolTableIface* symbols;
 
 public slots:
     QList<QString> getProcNames();
     QList<proc::Process> getProcs();
+    QList<Symbol> getProcFunctions();
+    bool attachToProcess( int id);
+    
+    /*
+      getCounters
+      getCounterName
+    */
 
 public:
-    Model( BusinessLogicIface* core_);
+    Model();
+    ~Model();
 
     void registerSelf( QScriptEngine* eng);
 };

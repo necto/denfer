@@ -11,15 +11,16 @@
 
 #pragma once
 
+#include <limits>
 #include <QString>
 #include <QList>
-#include <set>
-#include <cstdint>
+#include <QSet>
 
 namespace syminfo
 {
 
-typedef void* addr_t;
+class Symbol;
+typedef int addr_t;
 typedef size_t addrsize_t;
 typedef QList<Symbol*> SymbolList;
 
@@ -49,6 +50,9 @@ public:
     inline QString name() const { return name_; }
     inline addr_t address() const { return address_;}
     inline addrsize_t length() const { return length_;}
+    inline void setName( const QString& n) { name_ = n; }
+    inline void setAddress( addr_t a) { address_ = a;}
+    inline void setLength( addrsize_t l) { length_ = l;}
 #if 0
     inline DebugInfo debug_info() const { return debug_info_;}
     inline const SymbolList& parents() const { return parents_;} 
@@ -57,11 +61,12 @@ public:
     inline bool operator<(const Symbol& S) const
     {
         return address_<S.address();
+
     }
 
     inline bool operator==( const Symbol& S) const
     {
-        return address==S.address();
+        return address_==S.address();
     }
 
     Symbol( const addr_t& addr, const addrsize_t& size, 
@@ -72,20 +77,24 @@ public:
         name_ = name;
     }
 
+    Symbol() //Needed for scripting
+        :name_(), address_(), length_() {}
 };
 
-typedef std::set<Symbol> SymbolSet;
+inline uint qHash( const Symbol&  s) {return s.address() % std::numeric_limits<uint>::max();}
 
-class SymbolTable
+typedef QSet<Symbol> SymbolSet;
+
+class SymbolTableIface
 {
 public:
     /**
      * Initialize and prepare SymbolTableInterface object
      * Returns prepared object
      */
-    virtual static SymbolTable create(QString) = 0;
+    static SymbolTableIface* create(QString);
 
-    virtual bool destroy() = 0;
+    static bool destroy( SymbolTableIface*);
 
     /** Returns number of symbols */
     virtual int getNumberOfSymbols() = 0;
@@ -94,12 +103,10 @@ public:
     virtual SymbolSet& getSymbolList() = 0;
 
     /* Returns Symbol with specific address */
-    virtual Symbol getSymbol(addr_t address) = 0;
+    virtual Symbol getSymbol( addr_t address) = 0;
 
     /* Returns address of symbol */
-    virtual addr_t getAddress(Symbol symbol) = 0;
-}
-
-
+    virtual addr_t getAddress( Symbol symbol) = 0;
+};
 
 }

@@ -2,5 +2,5 @@
     error( Couldn't find the common_libs.pri file! )
 }
 
-SOURCES += \
-    dummy.cpp
+SOURCES += *.cpp
+HEADERS += *.hpp
