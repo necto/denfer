@@ -35,7 +35,7 @@ class Model: public QObject
 public slots:
     QList<QString> getProcNames();
     QList<proc::Process> getProcs();
-    QList<Symbol> getProcFunctions();
+    QList<syminfo::Symbol> getProcFunctions();
     bool attachToProcess( int id);
     
     /*

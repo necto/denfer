@@ -72,7 +72,7 @@ QList<QString> Model::getProcNames()
 
 QList<Process> Model::getProcs()
 {
-    return procs->getProcesses();//core->getProcs();
+    return procs->getProcesses();
 }
 
 QList<Symbol> Model::getProcFunctions()
