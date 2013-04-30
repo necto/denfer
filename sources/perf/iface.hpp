@@ -96,8 +96,8 @@ public:
  */
 struct PlainRecord
 {
-    uint64_t key;
-    uint64_t val;
+    quint64 key;
+    quint64 val;
 };
 
 typedef QVector<PlainRecord> SimpleTable_t;

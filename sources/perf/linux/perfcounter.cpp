@@ -16,7 +16,19 @@ namespace perf
 namespace lin
 {
 
-// Nothing to do here yet
+CounterValuesImpl::CounterValuesImpl() : simple_table( new SimpleTable_t)
+{
+}
+
+SimpleTable_t* CounterValuesImpl::getSimpleTable()
+{
+    return simple_table;
+}
+
+void CounterValuesImpl::setSimpleTable( SimpleTable_t* table)
+{
+    simple_table = table;    
+}
 
 }; // namespace lin
 
