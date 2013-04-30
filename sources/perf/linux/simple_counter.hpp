@@ -26,6 +26,11 @@ namespace lin
 {
 
 /**
+ * Internal data storage type
+ */
+typedef QMap<quint64,quint64> SimpleValues_t;
+
+/**
  * Worker class to be running inside separate thread.
  * Class is based upon QTimer to perform simple data peek
  * every N msec.
@@ -59,13 +64,19 @@ signals:
     /**
      * Signal to report counted data.
      */
-    void valuesReady( CounterValues* values);
+    void valuesReady( SimpleValues_t* values);
 
 private:
     /**
      * Pid of the process to be attached to.
      */
     pid_t pid;
+
+    /**
+     * Internal storage class
+     * FIXME: reconsider. Should be something faster
+     */
+    SimpleValues_t* values;
 };
 
 class SimpleCounter : public QObject, public PerfCounterImpl
@@ -94,7 +105,7 @@ public slots:
     /**
      * Slot to recieve worker thread results
      */
-    void receiveValues( CounterValues* val);
+    void receiveValues( SimpleValues_t* val);
 
 signals:
     /**
@@ -127,7 +138,7 @@ private:
     /**
      * Values to return
      */
-    CounterValues* values;
+    CounterValuesImpl* values;
 };
 
 }; // namespace lin

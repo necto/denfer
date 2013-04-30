@@ -20,6 +20,9 @@ SimpleCounterWorker::SimpleCounterWorker( pid_t _pid) : QTimer(), pid( _pid)
 {
     /* Connect timer timeout event to peekdata action */
     QObject::connect(this, SIGNAL(timeout()), this, SLOT(doCount()));
+
+    /* Create internal data storage */
+    values = new SimpleValues_t;
 };
 
 void SimpleCounterWorker::startCount()
@@ -30,7 +33,12 @@ void SimpleCounterWorker::startCount()
      */
     long ptrace_ret = ptrace(PTRACE_ATTACH, pid,
                              NULL, NULL);
-    //FIXME: add error processing here
+    
+    if ( ptrace_ret == -1)
+    {
+        // FIXME: Add error processing here
+    }
+
     wait(NULL);
     ptrace(PTRACE_CONT, pid, NULL, NULL);
 
@@ -41,19 +49,30 @@ void SimpleCounterWorker::startCount()
 void SimpleCounterWorker::doCount()
 {
     struct user_regs_struct regs;
+    quint64 rip, val;
 
+    kill( pid, SIGSTOP);
+    wait(NULL);
     ptrace(PTRACE_GETREGS, pid,                                                                                                                                                                  
             NULL, &regs);                                                                                                                                                                                    
     //FIXME: add error processing here
+    rip = regs.rip;
+
+    val = 1 + values->value( rip);
+    values->insert( rip, val);
+
     ptrace(PTRACE_CONT, pid,                                                                                                                                                                     
             NULL, NULL);
 }
 
 void SimpleCounterWorker::getValues()
 {
-    // Do values cut off
+    /* Do values cut off */
+    SimpleValues_t* old = values;
 
-    emit valuesReady( (CounterValues*)NULL);
+    values = new SimpleValues_t;
+
+    emit valuesReady( old);
 }
 
 SimpleCounter::SimpleCounter( pid_t _pid, int msec) : pid( _pid)
@@ -69,8 +88,8 @@ SimpleCounter::SimpleCounter( pid_t _pid, int msec) : pid( _pid)
     QObject::connect( thread, SIGNAL( finished()), thread, SLOT( deleteLater()));
     QObject::connect( this, SIGNAL( valuesRequest()), 
                       worker, SLOT( getValues()));
-    QObject::connect( worker, SIGNAL( valuesReady( CounterValues*)), 
-                      this, SLOT( receiveValues( CounterValues*)));
+    QObject::connect( worker, SIGNAL( valuesReady( SimpleValues_t*)), 
+                      this, SLOT( receiveValues( SimpleValues_t*)));
 
     worker->moveToThread(thread);
 }
@@ -94,12 +113,30 @@ CounterValues* SimpleCounter::getValues()
     QObject::connect( this, SIGNAL( valuesReady()), &loop, SLOT( quit()));
     loop.exec();
 
-    return values;
+    return (CounterValues*)values;
 }
 
-void SimpleCounter::receiveValues( CounterValues* val)
+void SimpleCounter::receiveValues( SimpleValues_t* val)
 {
-    values = val;
+    /* Convert values to external format */
+    values = new CounterValuesImpl;
+    SimpleTable_t* table = values->getSimpleTable();
+
+    SimpleValues_t::const_iterator i;
+    for ( i = val->begin();
+          i != val->end();
+          ++i )
+    {
+        PlainRecord rec;
+        rec.key = i.key();
+        rec.val = i.value();
+
+        table->push_back( rec);
+    }
+
+    /* Destroy iinternal values */
+    delete val;
+
     emit valuesReady();
 }
 
