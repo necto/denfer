@@ -40,7 +40,7 @@ QScriptValue symbolToScriptVal( QScriptEngine *engine, const syminfo::Symbol& s)
     QScriptValue obj = engine->newObject();
     obj.setProperty( "name", s.name());
     obj.setProperty( "address", s.address());
-    obj.setProperty( "length", s.length());
+    obj.setProperty( "length", (int)s.length());
     return obj;
 }
 
