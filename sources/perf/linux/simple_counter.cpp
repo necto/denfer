@@ -75,8 +75,14 @@ void SimpleCounterWorker::getValues()
     emit valuesReady( old);
 }
 
-SimpleCounter::SimpleCounter( pid_t _pid, int msec) : pid( _pid)
+PerfCounterImpl* SimpleCounter::create()
 {
+    return (PerfCounterImpl*)(new SimpleCounter());
+}
+
+void SimpleCounter::init( pid_t _pid, int msec)
+{
+    pid = _pid;
     worker = new SimpleCounterWorker( pid);
     QThread* thread = new QThread;
 
@@ -102,6 +108,16 @@ void SimpleCounter::start()
 void SimpleCounter::stop()
 {
     thread->quit();
+}
+
+void SimpleCounter::reset()
+{
+    //FIXME: add impl
+}
+
+void SimpleCounter::destroy()
+{
+    //FIXME: do cleanup
 }
 
 CounterValues* SimpleCounter::getValues()
@@ -134,13 +150,26 @@ void SimpleCounter::receiveValues( SimpleValues_t* val)
         table->push_back( rec);
     }
 
-    /* Destroy iinternal values */
+    /* Destroy internal values */
     delete val;
 
     emit valuesReady();
 }
 
-const QUuid SimpleCounter::uuid = QUuid( "{00000000-0000-0000-0000-000000000001}");
+const PerfCounterInfo SimpleCounter::info = SimpleCounter::doRegister();
+
+PerfCounterInfo SimpleCounter::doRegister()
+{
+    PerfCounterInfo inf;
+    inf.name = QString("SimpleCounter");
+    inf.type = COUNTER_PLAIN; 
+    inf.provider = PROVIDER_DENFER;
+    inf.uuid = QUuid( "{00000000-0000-0000-0000-000000000001}");
+    inf.factory = PerfCounterFactoryImpl::getInstance().registerCounter( inf.uuid, SimpleCounter::create);
+    PerfManagerImpl::getInstance().registerCounter( inf);
+
+    return inf;
+}
 
 }; // namespace lin
 

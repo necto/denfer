@@ -18,6 +18,10 @@ namespace perf
 namespace lin
 {
 
+class PerfCounterImpl;
+
+typedef PerfCounterImpl* (*creator_t)();
+
 /**
  * Perf Counters Factory implementation on Linux
  */
@@ -25,26 +29,46 @@ class PerfCounterFactoryImpl : public PerfCounterFactory
 {
 public:
     /**
+     * Get single instance
+     */
+    static PerfCounterFactoryImpl& getInstance();
+
+    /**
      * Create  particular counter based on its guid
      * @params guid of counter
      * @return reference to instance of counter class
      */
-    virtual PerfCounter* createCounter( uint64_t guid);
+    virtual PerfCounter* createCounter( QUuid uuid);
+
+    /**
+     * Register counter in current factory
+     */
+    PerfCounterFactory* registerCounter( QUuid uuid, creator_t t);
 private:
     /**
      * Default constructor
      */
     PerfCounterFactoryImpl();
+
+    /**
+     * List of supported counters
+     * Maps uuid to creator function
+     */
+    QMap<QUuid, creator_t> supported_counters;
 };
 
+/**
+ * Implementation of performance manager for Linux
+ * Singleton - there is no use in many managers
+ */
 class PerfManagerImpl : public PerfManager
 {
 public:
     /**
-     * Default constructor
+     * Get single instance
      */
-    PerfManagerImpl();
-    
+    static PerfManagerImpl& getInstance();
+
     /**
      * Return available counters info.
      * (see @link PerfCounterInfo)
@@ -57,6 +81,21 @@ public:
      * of implementation class.
      */
     virtual void destroy();
+
+    /**
+     * Register new counter
+     */
+    void registerCounter( PerfCounterInfo info);
+private:
+    /**
+     * Default constructor
+     */
+    PerfManagerImpl();
+
+    /**
+     * Vector of available counters
+     */
+    QVector<PerfCounterInfo> counters;
 };
 
 }; // namespace linux

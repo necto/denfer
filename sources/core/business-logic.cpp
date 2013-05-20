@@ -35,6 +35,17 @@ QList<QString> BusinessLogic::getProcNames( QList<Process> procs)
     return filterSmth( ret);
 }
 
+QList<QString> BusinessLogic::infosToStr( QVector<PerfCounterInfo> infos)
+{
+    QList<QString> ret;
+    
+    for ( QVector<PerfCounterInfo>::const_iterator i = infos.begin();
+          i != infos.end(); ++i )
+        ret.append( i->toString());
+
+    return filterSmth( ret);
+}
+
 BusinessLogicIface* BusinessLogicIface::create()
 {
     return new BusinessLogic;

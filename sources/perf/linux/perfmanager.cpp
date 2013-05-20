@@ -11,18 +11,43 @@
 namespace perf
 {
 
+using lin::PerfManagerImpl;
+
+PerfManager* PerfManager::create()
+{
+    return (PerfManager*)( &PerfManagerImpl::getInstance());
+}
+
 namespace lin
 {
+
+PerfCounterFactoryImpl& PerfCounterFactoryImpl::getInstance()
+{
+    static PerfCounterFactoryImpl instance;
+    return instance;
+}
 
 PerfCounterFactoryImpl::PerfCounterFactoryImpl()
 {
     // Not yet implemented
 }
 
-PerfCounter* PerfCounterFactoryImpl::createCounter( uint64_t uuid)
+PerfCounterFactory* PerfCounterFactoryImpl::registerCounter( QUuid uuid, creator_t creator)
 {
-    // Not yet implemented
-    return (PerfCounter*)( NULL);
+    supported_counters.insert( uuid, creator);
+    return &PerfCounterFactoryImpl::getInstance();
+}
+
+PerfCounter* PerfCounterFactoryImpl::createCounter( QUuid uuid)
+{
+    Q_ASSERT( supported_counters.find( uuid) != supported_counters.end() );
+    return (PerfCounter*)(supported_counters.value( uuid))();
+}
+
+PerfManagerImpl& PerfManagerImpl::getInstance()
+{
+    static PerfManagerImpl instance;
+    return instance;
 }
 
 PerfManagerImpl::PerfManagerImpl()
@@ -37,8 +62,12 @@ void PerfManagerImpl::destroy()
 
 QVector<PerfCounterInfo> PerfManagerImpl::getAvailableCounters()
 {
-    // Not yet implemented
-    return QVector<PerfCounterInfo>();
+    return counters;
+}
+
+void PerfManagerImpl::registerCounter( PerfCounterInfo info)
+{
+    counters.push_back(info);
 }
 
 }; // namespace linux

@@ -14,4 +14,4 @@ HEADERS += *.hpp
 SOURCES += *.cpp
 
 LIBS += -L../../bin/libs
-LIBS += -lgui -lcore -lproc -lsyminfo
+LIBS += -lgui -lcore -lproc -lsyminfo -lperf

@@ -22,6 +22,7 @@ public:
     QList<QString> filterSmth( QList<QString> procs);
 
     QList<QString> getProcNames( QList<Process> procs);
+    QList<QString> infosToStr( QVector<PerfCounterInfo> infos);
 };
 
 }; //namespace core

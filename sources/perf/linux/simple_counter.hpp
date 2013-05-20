@@ -10,7 +10,8 @@
 
 #pragma once
 
-#include "perf_impl.hpp"
+#include "perfcounter.hpp"
+#include "perfmanager.hpp"
 #include <QThread>
 #include <QTimer>
 #include <sys/types.h>
@@ -84,21 +85,23 @@ class SimpleCounter : public QObject, public PerfCounterImpl
     Q_OBJECT
 public:
     /**
-     * UUID of simple counter
-     */
-    static const QUuid uuid;
+     * Creator
+     */ 
+    static PerfCounterImpl* create();
 
     /**
-     * Constructor counter for given process
+     * Init counter for given process
      * and with given sampling rate.
      */
-    SimpleCounter( pid_t _pid, int msec);
+    void init( pid_t _pid, int msec);
 
     void start();
 
     void stop();
 
     void reset();
+
+    void destroy();
 
     CounterValues* getValues();
 public slots:
@@ -139,6 +142,16 @@ private:
      * Values to return
      */
     CounterValuesImpl* values;
+
+    /**
+     * Info of simple counter
+     */
+    static const PerfCounterInfo info;
+
+    /**
+     * Perfrom info init and registration
+     */
+    static PerfCounterInfo doRegister();
 };
 
 }; // namespace lin

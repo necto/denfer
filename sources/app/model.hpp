@@ -11,6 +11,7 @@
 #include <QObject>
 #include "core/iface.hpp"
 #include "syminfo/iface.hpp"
+#include "perf/iface.hpp"
 
 class QScriptEngine;
 
@@ -23,6 +24,8 @@ using proc::Process;
 using syminfo::SymbolTableIface;
 using syminfo::Symbol;
 using syminfo::SymbolSet;
+using perf::PerfManager;
+using perf::PerfCounterInfo;
 
 class Model: public QObject
 {
@@ -31,6 +34,7 @@ class Model: public QObject
     BusinessLogicIface* core;
     ProcessListIface* procs;
     SymbolTableIface* symbols;
+    PerfManager* perf_mgr; 
 
 public slots:
     QList<QString> getProcNames();
@@ -38,10 +42,9 @@ public slots:
     QList<syminfo::Symbol> getProcFunctions();
     bool attachToProcess( int id);
     
-    /*
-      getCounters
-      getCounterName
-    */
+    QVector<perf::PerfCounterInfo> getCountersInfo();
+    QList<QString> getCountersInfoStr();
+
 
 public:
     Model();

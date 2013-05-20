@@ -61,6 +61,11 @@ struct PerfCounterInfo
     PerfCounterProvider provider;
     QUuid uuid;
     PerfCounterFactory* factory;
+
+    /**
+     * Convert structure to printable view
+     */
+    QString toString() const;
 };
 
 /**

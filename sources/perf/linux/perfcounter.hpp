@@ -20,6 +20,11 @@ namespace lin
 class PerfCounterImpl : public PerfCounter
 {
     // Nothing to do here yet
+public:
+    /**
+     * Create new perf counter
+     */
+    static PerfCounterImpl* create();
 };
 
 class CounterValuesImpl : public CounterValues

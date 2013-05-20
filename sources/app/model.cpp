@@ -17,6 +17,8 @@ Q_DECLARE_METATYPE( proc::Process)
 Q_DECLARE_METATYPE( QList<proc::Process>)
 Q_DECLARE_METATYPE( syminfo::Symbol)
 Q_DECLARE_METATYPE( QList<syminfo::Symbol>)
+Q_DECLARE_METATYPE( perf::PerfCounterInfo)
+Q_DECLARE_METATYPE( QVector<perf::PerfCounterInfo>)
 
 namespace app
 {
@@ -51,11 +53,26 @@ void symbolFromScriptVal( const QScriptValue &obj, syminfo::Symbol& s)
     s.setLength( obj.property("length").toInt32());
 }
 
+QScriptValue counterInfoToScriptVal( QScriptEngine *engine, const perf::PerfCounterInfo& i)
+{
+    QScriptValue obj = engine->newObject();
+    obj.setProperty( "name", i.name);
+    obj.setProperty( "uuid", i.uuid.toString());
+    return obj;
+}
+
+void counterInfoFromScriptVal( const QScriptValue &obj, perf::PerfCounterInfo& i)
+{
+    i.name = obj.property( "name").toString();
+    i.uuid = QUuid( obj.property( "uuid").toString());
+}
+ 
 Model::Model()
 {
     core = BusinessLogicIface::create();
     procs = ProcessListIface::create();
     symbols = SymbolTableIface::create("noname");
+    perf_mgr = PerfManager::create();
 }
 
 Model::~Model()
@@ -80,6 +97,16 @@ QList<Symbol> Model::getProcFunctions()
     return symbols->getSymbolList().toList();
 }
 
+QVector<perf::PerfCounterInfo> Model::getCountersInfo()
+{
+    return perf_mgr->getAvailableCounters();
+}
+
+QList<QString> Model::getCountersInfoStr()
+{
+    return core->infosToStr( perf_mgr->getAvailableCounters());
+}
+
 bool Model::attachToProcess( int id)
 {
     (void)id;
@@ -91,8 +118,10 @@ void Model::registerSelf( QScriptEngine* eng)
     qScriptRegisterSequenceMetaType<QList<QString> > (eng);
     qScriptRegisterMetaType( eng, processToScriptVal, processFromScriptVal);
     qScriptRegisterMetaType( eng, symbolToScriptVal, symbolFromScriptVal);
+    qScriptRegisterMetaType( eng, counterInfoToScriptVal, counterInfoFromScriptVal);
     qScriptRegisterSequenceMetaType<QList<proc::Process> > (eng);
     qScriptRegisterSequenceMetaType<QList<syminfo::Symbol> > (eng);
+    qScriptRegisterSequenceMetaType<QVector<perf::PerfCounterInfo> > (eng);
 
     QScriptValue data = eng->newQObject( this);
     eng->globalObject().setProperty( "m", data);
