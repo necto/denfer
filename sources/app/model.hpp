@@ -40,11 +40,12 @@ public slots:
     QList<QString> getProcNames();
     QList<proc::Process> getProcs();
     QList<syminfo::Symbol> getProcFunctions();
-    bool attachToProcess( int id);
+    bool attachToProcess( proc::Process);
     
     QVector<perf::PerfCounterInfo> getCountersInfo();
     QList<QString> getCountersInfoStr();
 
+    proc::Process startProcess( QString name);
 
 public:
     Model();

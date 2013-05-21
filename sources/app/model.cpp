@@ -107,10 +107,15 @@ QList<QString> Model::getCountersInfoStr()
     return core->infosToStr( perf_mgr->getAvailableCounters());
 }
 
-bool Model::attachToProcess( int id)
+bool Model::attachToProcess( proc::Process p)
 {
-    (void)id;
+    (void)p;
     return false;
+}
+
+proc::Process Model::startProcess( QString name)
+{
+    return procs->startProcess( name);
 }
 
 void Model::registerSelf( QScriptEngine* eng)

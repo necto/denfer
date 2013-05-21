@@ -7,6 +7,8 @@
 
 #include "iface.hpp"
 #include "process-list.hpp"
+#include <QProcess>
+#include <QDebug>
 
 namespace proc
 {
@@ -25,6 +27,21 @@ QList<Process> ProcessList::getProcesses()
         ret.append( p);
     }
     return ret;
+}
+
+Process ProcessList::startProcess( QString name)
+{
+    Process p;
+    qint64 id;
+    p.name = name;
+
+    if ( !QProcess::startDetached( name, QStringList(""), "", &id) )
+    {
+        qDebug() << "Cannot start process " << name;
+    }
+    
+    p.id = id;
+    return p;
 }
 
 ProcessListIface* ProcessListIface::create()
