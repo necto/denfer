@@ -12,6 +12,7 @@
 #include "core/iface.hpp"
 #include "syminfo/iface.hpp"
 #include "perf/iface.hpp"
+#include "model-objects.hpp"
 
 class QScriptEngine;
 
@@ -38,15 +39,13 @@ class Model: public QObject
 
 public slots:
     QList<QString> getProcNames();
-    QList<proc::Process> getProcs();
-    QList<syminfo::Symbol> getProcFunctions();
-    bool attachToProcess( proc::Process);
+    QList<app::ProcessObj*> getProcs();
+    QList<app::SymbolObj*> getProcFunctions();
     
-    QVector<perf::PerfCounterInfo> getCountersInfo();
+    QList<app::CounterInfoObj*> getCountersInfo();
     QList<QString> getCountersInfoStr();
 
-    proc::Process startProcess( QString name);
-
+    app::ProcessObj* startProcess( QString name);
 public:
     Model();
     ~Model();

@@ -13,60 +13,47 @@
 #include <QtScript/QScriptEngine>
 
 Q_DECLARE_METATYPE( QList<QString>)
-Q_DECLARE_METATYPE( proc::Process)
-Q_DECLARE_METATYPE( QList<proc::Process>)
-Q_DECLARE_METATYPE( syminfo::Symbol)
-Q_DECLARE_METATYPE( QList<syminfo::Symbol>)
-Q_DECLARE_METATYPE( perf::PerfCounterInfo)
-Q_DECLARE_METATYPE( QVector<perf::PerfCounterInfo>)
+Q_DECLARE_METATYPE( app::ProcessObj*)
+Q_DECLARE_METATYPE( QList<app::ProcessObj*>)
+Q_DECLARE_METATYPE( app::SymbolObj*)
+Q_DECLARE_METATYPE( QList<app::SymbolObj*>)
+Q_DECLARE_METATYPE( app::CounterInfoObj*)
+Q_DECLARE_METATYPE( QList<app::CounterInfoObj*>)
 
 namespace app
 {
 
-QScriptValue processToScriptVal( QScriptEngine *engine, const proc::Process &p)
+QScriptValue processObjToScriptVal( QScriptEngine *engine, ProcessObj* const &p)
 {
-    QScriptValue obj = engine->newObject();
-    obj.setProperty("name", p.name);
-    obj.setProperty("id", p.id);
-    return obj;
+    return engine->newQObject( p);
 }
 
-void processFromScriptVal( const QScriptValue &obj, proc::Process &p)
+void processObjFromScriptVal( const QScriptValue &obj, ProcessObj* &p)
 {
-    p.name = obj.property("name").toString();
-    p.id = obj.property("id").toInt32();
+    p = qobject_cast<ProcessObj*>(obj.toQObject());
 }
 
-QScriptValue symbolToScriptVal( QScriptEngine *engine, const syminfo::Symbol& s)
+QScriptValue symbolObjToScriptVal( QScriptEngine *engine, SymbolObj* const &s)
 {
-    QScriptValue obj = engine->newObject();
-    obj.setProperty( "name", s.name());
-    obj.setProperty( "address", s.address());
-    obj.setProperty( "length", (int)s.length());
-    return obj;
+    return engine->newQObject( s);
 }
 
-void symbolFromScriptVal( const QScriptValue &obj, syminfo::Symbol& s)
+void symbolObjFromScriptVal( const QScriptValue &obj, SymbolObj* &s)
 {
-    s.setName( obj.property("name").toString());
-    s.setAddress( obj.property("address").toInt32());
-    s.setLength( obj.property("length").toInt32());
+    s = qobject_cast<SymbolObj*>(obj.toQObject());
 }
 
-QScriptValue counterInfoToScriptVal( QScriptEngine *engine, const perf::PerfCounterInfo& i)
+QScriptValue counterInfoObjToScriptVal( QScriptEngine *engine, CounterInfoObj* const &i)
 {
-    QScriptValue obj = engine->newObject();
-    obj.setProperty( "name", i.name);
-    obj.setProperty( "uuid", i.uuid.toString());
-    return obj;
+    return engine->newQObject( i);
 }
 
-void counterInfoFromScriptVal( const QScriptValue &obj, perf::PerfCounterInfo& i)
+void counterInfoObjFromScriptVal( const QScriptValue &obj, CounterInfoObj* &i)
 {
-    i.name = obj.property( "name").toString();
-    i.uuid = QUuid( obj.property( "uuid").toString());
+    i = qobject_cast<CounterInfoObj*>(obj.toQObject());
 }
- 
+
+
 Model::Model()
 {
     core = BusinessLogicIface::create();
@@ -84,22 +71,52 @@ Model::~Model()
 
 QList<QString> Model::getProcNames()
 {
-    return core->getProcNames( getProcs());
+    return core->getProcNames( procs->getProcesses());
 }
 
-QList<Process> Model::getProcs()
+QList<ProcessObj*> Model::getProcs()
 {
-    return procs->getProcesses();
+    QList<proc::Process> procs_list = procs->getProcesses();
+    QList<ProcessObj*> res;
+
+    for ( QList<proc::Process>::const_iterator iter = procs_list.begin();
+          iter != procs_list.end();
+          iter++)
+    {
+        res.append( new ProcessObj( (const proc::Process*)&(*iter)));
+    }
+
+    return res;
 }
 
-QList<Symbol> Model::getProcFunctions()
+QList<SymbolObj*> Model::getProcFunctions()
 {
-    return symbols->getSymbolList().toList();
+    QList<syminfo::Symbol> syms = symbols->getSymbolList().toList();
+    QList<SymbolObj*> res;
+
+    for ( QList<syminfo::Symbol>::const_iterator iter = syms.begin();
+          iter != syms.end();
+          iter++)
+    {
+        res.append( new SymbolObj( &(*iter)));
+    }
+
+    return res;
 }
 
-QVector<perf::PerfCounterInfo> Model::getCountersInfo()
+QList<CounterInfoObj*> Model::getCountersInfo()
 {
-    return perf_mgr->getAvailableCounters();
+    QVector<perf::PerfCounterInfo> infos = perf_mgr->getAvailableCounters();
+    QList<CounterInfoObj*> res;
+    
+    for ( QVector<perf::PerfCounterInfo>::const_iterator iter = infos.begin();
+          iter != infos.end();
+          iter++)
+    {
+        res.append( new CounterInfoObj( &(*iter)));
+    }
+
+    return res;
 }
 
 QList<QString> Model::getCountersInfoStr()
@@ -107,26 +124,22 @@ QList<QString> Model::getCountersInfoStr()
     return core->infosToStr( perf_mgr->getAvailableCounters());
 }
 
-bool Model::attachToProcess( proc::Process p)
+ProcessObj* Model::startProcess( QString name)
 {
-    (void)p;
-    return false;
-}
-
-proc::Process Model::startProcess( QString name)
-{
-    return procs->startProcess( name);
+    proc::Process pr = procs->startProcess( name);
+    const proc::Process* prp = &pr;
+    return new ProcessObj( prp);
 }
 
 void Model::registerSelf( QScriptEngine* eng)
 {
+    qScriptRegisterMetaType( eng, processObjToScriptVal, processObjFromScriptVal);
+    qScriptRegisterMetaType( eng, symbolObjToScriptVal, symbolObjFromScriptVal);
+    qScriptRegisterMetaType( eng, counterInfoObjToScriptVal, counterInfoObjFromScriptVal);
     qScriptRegisterSequenceMetaType<QList<QString> > (eng);
-    qScriptRegisterMetaType( eng, processToScriptVal, processFromScriptVal);
-    qScriptRegisterMetaType( eng, symbolToScriptVal, symbolFromScriptVal);
-    qScriptRegisterMetaType( eng, counterInfoToScriptVal, counterInfoFromScriptVal);
-    qScriptRegisterSequenceMetaType<QList<proc::Process> > (eng);
-    qScriptRegisterSequenceMetaType<QList<syminfo::Symbol> > (eng);
-    qScriptRegisterSequenceMetaType<QVector<perf::PerfCounterInfo> > (eng);
+    qScriptRegisterSequenceMetaType<QList<app::ProcessObj*> > (eng);
+    qScriptRegisterSequenceMetaType<QList<app::SymbolObj*> > (eng);
+    qScriptRegisterSequenceMetaType<QList<app::CounterInfoObj*> > (eng);
 
     QScriptValue data = eng->newQObject( this);
     eng->globalObject().setProperty( "m", data);
