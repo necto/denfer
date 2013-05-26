@@ -23,24 +23,32 @@ QList<Process> ProcessList::getProcesses()
 
     for ( int i = 0; i < 10; ++i)
     {
-        Process p = {QString( "another process"), i};
+        Process p = {i, 0, QString( "another process"), QString( "/usr/bin/id"), QString( "bourbaki")};
         ret.append( p);
     }
     return ret;
 }
 
-Process ProcessList::startProcess( QString name)
+Process ProcessList::getProc( procid id)
+{
+    return { id, 0, QString( "requested process"), QString( "/usr/bin/id"), QString( "bourbaki")};
+}
+
+Process ProcessList::startProcess( QString cmd)
 {
     Process p;
     qint64 id;
-    p.name = name;
+    p.name = cmd;
 
-    if ( !QProcess::startDetached( name, QStringList(""), "", &id) )
+    if ( !QProcess::startDetached( cmd, QStringList(""), "", &id) )
     {
-        qDebug() << "Cannot start process " << name;
+        qDebug() << "Cannot start process " << cmd;
     }
     
     p.id = id;
+    p.parent = 0; //TODO : get the current process id
+    p.user = "g-man"; //TODO: get the current user name
+    p.file = cmd; //TODO
     return p;
 }
 

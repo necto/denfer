@@ -18,7 +18,8 @@ public:
     virtual ~ProcessList();
 
     QList<Process> getProcesses();
-    Process startProcess( QString name);
+    Process startProcess( QString cmd);
+    Process getProc( procid id);
 };
 
 }; //namespace proc

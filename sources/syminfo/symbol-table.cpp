@@ -15,7 +15,7 @@ SymbolTable::SymbolTable()
 {
     for ( int i = 0; i < 10; ++i)
     {
-        tmp.insert( Symbol( i*10, i, "symbol"));
+        tmp.insert( Symbol( i*10, i, QString( "symbol %1").arg(i)));
     }
 }
 
@@ -35,7 +35,10 @@ SymbolSet& SymbolTable::getSymbolList()
 
 Symbol SymbolTable::getSymbol( addr_t address)
 {
-    return Symbol( address, 1, "sym");
+    for ( SymbolSet::const_iterator i = tmp.begin(); i != tmp.end(); ++i )
+        if ( i->contains( address) )
+            return *i;
+    return Symbol( 0, 0, "not found");
 }
 
 addr_t SymbolTable::getAddress( Symbol symbol)

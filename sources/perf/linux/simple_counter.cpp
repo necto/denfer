@@ -53,16 +53,16 @@ void SimpleCounterWorker::doCount()
 
     kill( pid, SIGSTOP);
     wait(NULL);
-    ptrace(PTRACE_GETREGS, pid,                                                                                                                                                                  
-            NULL, &regs);                                                                                                                                                                                    
+    ptrace(PTRACE_GETREGS, pid, NULL, &regs);
+
     //FIXME: add error processing here
-    rip = regs.rip;
+
+    rip = regs.eip;
 
     val = 1 + values->value( rip);
     values->insert( rip, val);
 
-    ptrace(PTRACE_CONT, pid,                                                                                                                                                                     
-            NULL, NULL);
+    ptrace(PTRACE_CONT, pid, NULL, NULL);
 }
 
 void SimpleCounterWorker::getValues()

@@ -53,6 +53,8 @@ public:
     inline void setName( const QString& n) { name_ = n; }
     inline void setAddress( addr_t a) { address_ = a;}
     inline void setLength( addrsize_t l) { length_ = l;}
+    inline bool contains( addr_t a) const
+    { return address_ < a && a < (address_ + length_); }
 #if 0
     inline DebugInfo debug_info() const { return debug_info_;}
     inline const SymbolList& parents() const { return parents_;} 

@@ -14,17 +14,23 @@
 namespace proc
 {
 
+typedef int procid;// FIXME: change to cross-platform
+
 struct X_EXPORT Process
 {
+    procid id; 
+    procid parent;
     QString name;
-    int id; // FIXME: change to cross-platform
+    QString file;
+    QString user;
 };
 
 class X_EXPORT ProcessListIface
 {
 public:
     virtual QList<Process> getProcesses() = 0;
-    virtual Process startProcess( QString name) = 0;
+    virtual Process startProcess( QString cmd) = 0;
+    virtual Process getProc( procid id) = 0;
 
     static ProcessListIface* create();
     static bool destroy( ProcessListIface* ref);
