@@ -55,28 +55,28 @@ bool BusinessLogicIface::destroy( BusinessLogicIface* ref)
 }
 
 void BusinessLogic::setPerfCounterInfo(QVector<perf::PerfCounterInfo> *pci) {
-	QVector<perf::PerfCounterInfo>::const_iterator i;
-	EMA e;
-
-	counters.clear(); // clear QMap (delete all entries)
-	averages.clear();
-	for(i = pci->begin(); i != pci->end(); ++i) {
-		counters[i->id] = i->name;
-		averages[i->id] = e;
-	}
+    QVector<perf::PerfCounterInfo>::const_iterator i;
+    EMA e;
+    
+    counters.clear(); // clear QMap (delete all entries)
+    averages.clear();
+    for(i = pci->begin(); i != pci->end(); ++i) {
+        counters[i->id] = i->name;
+        averages[i->id] = e;
+    }
 } 
 
 void BusinessLogic::setAlphaValues(uint64_t key, double amin, double amax) {
-	averages[key].setAlpha(amin, amax);
-//	averages.find(key)->setAlpha(amin, amax);
+    averages[key].setAlpha(amin, amax);
+    // averages.find(key)->setAlpha(amin, amax);
 }
 
 void BusinessLogic::updatePerfCounterValue(uint64_t key, uint64_t value) {
-	QString name;
-	double value_to_display;
-
-	name = counters[key];
-	value_to_display = averages[key].update(value); // this variable holds current average value for given perf counter 
+    QString name;
+    double value_to_display;
+    
+    name = counters[key];
+    value_to_display = averages[key].update(value); // this variable holds current average value for given perf counter 
 }
 
 }; //namespace core
