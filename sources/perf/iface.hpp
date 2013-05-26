@@ -11,7 +11,9 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
-#include <stdint.h>
+//#include <stdint.h>
+
+typedef unsigned long long uint64_t;
 
 namespace perf
 {
@@ -60,6 +62,7 @@ struct PerfCounterInfo
     PerfCounterType type;
     PerfCounterProvider provider;
     QUuid uuid;
+    uint64_t id;
     PerfCounterFactory* factory;
 
     /**

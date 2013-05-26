@@ -31,7 +31,8 @@ QList<Process> ProcessList::getProcesses()
 
 Process ProcessList::getProc( procid id)
 {
-    return { id, 0, QString( "requested process"), QString( "/usr/bin/id"), QString( "bourbaki")};
+    Process p = { id, 0, QString( "requested process"), QString( "/usr/bin/id"), QString( "bourbaki")};
+    return p;
 }
 
 Process ProcessList::startProcess( QString cmd)
