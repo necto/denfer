@@ -22,7 +22,7 @@ namespace syminfo
 class Symbol;
 typedef int addr_t;
 typedef size_t addrsize_t;
-typedef QList<Symbol*> SymbolList;
+typedef QList<Symbol> SymbolList;
 
 /**
  * Class Symbol
@@ -102,7 +102,7 @@ public:
     virtual int getNumberOfSymbols() = 0;
 
     /** Returns reference to SymbolList */
-    virtual SymbolSet& getSymbolList() = 0;
+    virtual SymbolList& getSymbolList() = 0;
 
     /* Returns Symbol with specific address */
     virtual Symbol getSymbol( addr_t address) = 0;

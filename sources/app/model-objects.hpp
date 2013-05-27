@@ -43,8 +43,11 @@ private:
 class ProcessObj : public QObject 
 {
     Q_OBJECT
-    Q_PROPERTY( QString name READ getName WRITE setName);
     Q_PROPERTY( int id READ getId WRITE setId);
+    Q_PROPERTY( int parent READ getParent WRITE setParent);
+    Q_PROPERTY( QString name READ getName WRITE setName);
+    Q_PROPERTY( QString file READ getFile WRITE setFile);
+    Q_PROPERTY( QString user READ getUser WRITE setUser);
 public: 
     ProcessObj();
     ProcessObj( const proc::Process* proc);
@@ -52,11 +55,20 @@ public slots:
     /* Sets/gets for properties */
     QString getName() const;
     void setName( QString _name);
+    QString getUser() const;
+    void setUser( QString _name);
+    QString getFile() const;
+    void setFile( QString _name);
     int getId() const;
     void setId( int _id);
+    int getParent() const;
+    void setParent( int _id);
 private:
-    QString name;
     int id;
+    int parent;
+    QString name;
+    QString file;
+    QString user;
 };
 
 class CounterObj : public QObject

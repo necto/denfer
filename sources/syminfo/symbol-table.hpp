@@ -14,14 +14,14 @@ namespace syminfo
 
 class SymbolTable :public SymbolTableIface
 {
-    SymbolSet tmp;
+    SymbolList tmp;
 
 public:
     SymbolTable();
     ~SymbolTable();
     
     int getNumberOfSymbols();
-    SymbolSet& getSymbolList();
+    SymbolList& getSymbolList();
     Symbol getSymbol( addr_t address);
     addr_t getAddress( Symbol symbol);
 };

@@ -59,6 +59,9 @@ ProcessObj::ProcessObj( const proc::Process* proc)
 {
     this->setProperty( "name", proc->name);
     this->setProperty( "id", proc->id);
+    this->setProperty( "parent", proc->parent);
+    this->setProperty( "file", proc->file);
+    this->setProperty( "user", proc->user);
 }
 
 QString ProcessObj::getName() const
@@ -71,6 +74,26 @@ void ProcessObj::setName( QString _name)
     name = _name;
 }
 
+QString ProcessObj::getFile() const
+{
+    return file;
+}
+
+void ProcessObj::setFile( QString _file)
+{
+    file = _file;
+}
+
+QString ProcessObj::getUser() const
+{
+    return user;
+}
+
+void ProcessObj::setUser( QString _user)
+{
+    user = _user;
+}
+
 int ProcessObj::getId() const
 {
     return id;
@@ -79,6 +102,16 @@ int ProcessObj::getId() const
 void ProcessObj::setId( int _id)
 {
     id = _id;
+}
+
+int ProcessObj::getParent() const
+{
+    return parent;
+}
+
+void ProcessObj::setParent( int _id)
+{
+    parent = _id;
 }
 
 CounterObj::CounterObj()
@@ -102,6 +135,7 @@ void CounterObj::setId( int _id)
 
 void CounterObj::attach( Process proc)
 {
+    (void)proc;
     //FIXME: add impl
 }
 

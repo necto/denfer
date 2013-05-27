@@ -12,19 +12,26 @@
 #include <QtCore/QList>
 #include "proc/iface.hpp"
 #include "perf/iface.hpp"
-
+#include "syminfo/iface.hpp"
 
 namespace core
 {
 
 using proc::Process;
+using syminfo::SymbolList;
 
 class X_EXPORT BusinessLogicIface
 {
 public:
-    virtual QList<QString> filterSmth( QList<QString> procs) = 0;
-    virtual QList<QString> getProcNames( QList<Process> procs) = 0;
-    virtual QList<QString> infosToStr( QVector<perf::PerfCounterInfo> infos) = 0;
+
+    virtual QList<perf::PerfCounterInfo> getCountersInfo() = 0;
+    virtual QList<QString> getCountersInfoStr() = 0;
+    virtual Process startProcess( QString name) = 0;
+    virtual QList<Process> getProcsSorted() = 0;
+    virtual QList<QString> getProcNames() = 0;
+    virtual bool attachToProcess( proc::procid process) = 0;
+    virtual bool attachToProcess( Process process) = 0;
+    virtual SymbolList getSymbols() = 0;
 
     static BusinessLogicIface* create();
     static bool destroy( BusinessLogicIface* ref);

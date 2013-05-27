@@ -18,6 +18,8 @@ namespace core
 {
 
 using proc::ProcessListIface;
+using syminfo::SymbolTableIface;
+using perf::PerfManager;
 
 class EMA {
     double alpha_minus; // alpha value used to filter decreasing values
@@ -44,17 +46,26 @@ public:
 class BusinessLogic :public BusinessLogicIface
 {
     ProcessListIface* procs;
+    SymbolTableIface* symbols;
+    PerfManager* perf_mgr;
+
     QMap<uint64_t, QString> counters;
     QMap<uint64_t, EMA> averages;
     
 public:
     BusinessLogic();
     ~BusinessLogic();
-    QList<QString> filterSmth( QList<QString> procs);
 
-    QList<QString> getProcNames( QList<Process> procs);
-    QList<QString> infosToStr( QVector<perf::PerfCounterInfo> infos);
-    
+    QList<perf::PerfCounterInfo> getCountersInfo();
+    QList<QString> getCountersInfoStr();
+    Process startProcess( QString name);
+    QList<Process> getProcsSorted();
+    QList<QString> getProcNames();
+    bool attachToProcess( proc::procid process);
+    bool attachToProcess( Process process);
+    SymbolList getSymbols();
+
+
     /**
      * used to provide general counter information to here
      */

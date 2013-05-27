@@ -13,37 +13,74 @@ namespace core
 
 BusinessLogic::BusinessLogic()
 {
+    procs = ProcessListIface::create();
+    symbols = 0;//SymbolTableIface::create("noname");
+    perf_mgr = PerfManager::create();
 }
 
 BusinessLogic::~BusinessLogic()
 {
+    ProcessListIface::destroy( procs);
+    if ( symbols)
+        SymbolTableIface::destroy( symbols);
 }
 
-QList<QString> BusinessLogic::filterSmth( QList<QString> names)
+QList<perf::PerfCounterInfo> BusinessLogic::getCountersInfo()
 {
-    return names;
+    return perf_mgr->getAvailableCounters().toList();
 }
 
-QList<QString> BusinessLogic::getProcNames( QList<Process> procs)
-{
-    QList<QString> ret;
-    
-    for ( QList<Process>::const_iterator i = procs.begin();
-          i != procs.end(); ++i )
-        ret.append( i->name);
-
-    return filterSmth( ret);
-}
-
-QList<QString> BusinessLogic::infosToStr( QVector<perf::PerfCounterInfo> infos)
+QList<QString> BusinessLogic::getCountersInfoStr()
 {
     QList<QString> ret;
+    QList<perf::PerfCounterInfo> infos = getCountersInfo();
     
-    for ( QVector<perf::PerfCounterInfo>::const_iterator i = infos.begin();
+    for ( QList<perf::PerfCounterInfo>::const_iterator i = infos.begin();
           i != infos.end(); ++i )
         ret.append( i->toString());
 
-    return filterSmth( ret);
+    return ret;
+}
+
+Process BusinessLogic::startProcess( QString name)
+{
+    return procs->startProcess( name);
+}
+
+QList<Process> BusinessLogic::getProcsSorted()
+{
+    return procs->getProcesses();
+}
+
+QList<QString> BusinessLogic::getProcNames()
+{
+    QList<QString> ret;
+    QList<Process> processes = procs->getProcesses();
+    
+    for ( QList<Process>::const_iterator i = processes.begin();
+          i != processes.end(); ++i )
+        ret.append( i->name);
+    return ret;
+}
+
+bool BusinessLogic::attachToProcess( proc::procid process)
+{
+    return attachToProcess( procs->getProc( process));
+}
+
+bool BusinessLogic::attachToProcess( Process process)
+{
+    if ( symbols )
+        SymbolTableIface::destroy( symbols);
+    symbols = SymbolTableIface::create( process.file);
+    return symbols != 0;
+}
+
+SymbolList BusinessLogic::getSymbols()
+{
+    if ( symbols )
+        return symbols->getSymbolList();
+    return SymbolList();
 }
 
 BusinessLogicIface* BusinessLogicIface::create()

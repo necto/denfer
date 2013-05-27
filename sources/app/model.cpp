@@ -57,26 +57,21 @@ void counterInfoObjFromScriptVal( const QScriptValue &obj, CounterInfoObj* &i)
 Model::Model()
 {
     core = BusinessLogicIface::create();
-    procs = ProcessListIface::create();
-    symbols = SymbolTableIface::create("noname");
-    perf_mgr = PerfManager::create();
 }
 
 Model::~Model()
 {
     BusinessLogicIface::destroy( core);
-    ProcessListIface::destroy( procs);
-    SymbolTableIface::destroy( symbols);
 }
 
 QList<QString> Model::getProcNames()
 {
-    return core->getProcNames( procs->getProcesses());
+    return core->getProcNames();
 }
 
 QList<ProcessObj*> Model::getProcs()
 {
-    QList<proc::Process> procs_list = procs->getProcesses();
+    QList<proc::Process> procs_list = core->getProcsSorted();
     QList<ProcessObj*> res;
 
     for ( QList<proc::Process>::const_iterator iter = procs_list.begin();
@@ -91,10 +86,10 @@ QList<ProcessObj*> Model::getProcs()
 
 QList<SymbolObj*> Model::getProcFunctions()
 {
-    QList<syminfo::Symbol> syms = symbols->getSymbolList().toList();
+    SymbolList syms = core->getSymbols();
     QList<SymbolObj*> res;
 
-    for ( QList<syminfo::Symbol>::const_iterator iter = syms.begin();
+    for ( SymbolList::const_iterator iter = syms.begin();
           iter != syms.end();
           iter++)
     {
@@ -106,12 +101,12 @@ QList<SymbolObj*> Model::getProcFunctions()
 
 QList<CounterInfoObj*> Model::getCountersInfo()
 {
-    QVector<perf::PerfCounterInfo> infos = perf_mgr->getAvailableCounters();
+    QList<perf::PerfCounterInfo> infos = core->getCountersInfo();
     QList<CounterInfoObj*> res;
     
-    for ( QVector<perf::PerfCounterInfo>::const_iterator iter = infos.begin();
+    for ( QList<perf::PerfCounterInfo>::const_iterator iter = infos.begin();
           iter != infos.end();
-          iter++)
+          iter++ )
     {
         res.append( new CounterInfoObj( &(*iter)));
     }
@@ -121,12 +116,12 @@ QList<CounterInfoObj*> Model::getCountersInfo()
 
 QList<QString> Model::getCountersInfoStr()
 {
-    return core->infosToStr( perf_mgr->getAvailableCounters());
+    return core->getCountersInfoStr();
 }
 
 ProcessObj* Model::startProcess( QString name)
 {
-    proc::Process pr = procs->startProcess( name);
+    proc::Process pr = core->startProcess( name);
     const proc::Process* prp = &pr;
     return new ProcessObj( prp);
 }

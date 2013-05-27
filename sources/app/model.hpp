@@ -24,7 +24,7 @@ using proc::ProcessListIface;
 using proc::Process;
 using syminfo::SymbolTableIface;
 using syminfo::Symbol;
-using syminfo::SymbolSet;
+using syminfo::SymbolList;
 using perf::PerfManager;
 using perf::PerfCounterInfo;
 
@@ -33,9 +33,6 @@ class Model: public QObject
     Q_OBJECT
 
     BusinessLogicIface* core;
-    ProcessListIface* procs;
-    SymbolTableIface* symbols;
-    PerfManager* perf_mgr; 
 
 public slots:
     QList<QString> getProcNames();
