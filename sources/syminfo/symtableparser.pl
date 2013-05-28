@@ -8,6 +8,16 @@ use Getopt::Long;
 my $file;
 &GetOptions("f|file=s" => \$file);
 
+unless (-f $file) {
+    print STDERR "[ERROR] File $file doesn't exist\n";
+    exit -1;
+}
+
+if (`objdump -t $file` =~ /no symbols/) {
+    print STDERR "[ERROR] Symbol table has been stripped from $file binary\n";
+    exit -1;
+}
+
 my $out = "$file.objdump.out";
 `objdump -t $file  | grep -P "^[0-9a-f]+ [^\.\*]*F" | sort > $out`;
 `chmod 777 $out`;
@@ -19,3 +29,4 @@ while ($line = <OUT>) {
         print "$1\t$2\t$3\n";
     }
 }
+`rm -rf $out`;
