@@ -9,8 +9,8 @@
  */
 
 #include "simple_counter.hpp"
-#include <WinDef.h>
-#include <WinBase.h>
+
+#define SAMPLING_INTERVAL 100
 
 namespace perf
 {
@@ -128,9 +128,9 @@ PerfCounterImpl* SimpleCounter::create()
     return (PerfCounterImpl*)(new SimpleCounter());
 }
 
-void SimpleCounter::attach(DWORD pid)
+void SimpleCounter::attach(Q_PID pid)
 {
-    worker = new SimpleCounterWorker( pid);
+    worker = new SimpleCounterWorker( (DWORD)pid);
     QThread* thread = new QThread;
 
     worker->setInterval( SAMPLING_INTERVAL);

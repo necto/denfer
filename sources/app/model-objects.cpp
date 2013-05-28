@@ -99,7 +99,7 @@ int ProcessObj::getId() const
     return id;
 }
 
-void ProcessObj::setId( int _id)
+void ProcessObj::setId(int _id)
 {
     id = _id;
 }
@@ -128,14 +128,14 @@ int CounterObj::getId() const
     return id;
 }
 
-void CounterObj::setId( int _id)
+void CounterObj::setId(int _id)
 {
     id = _id;
 }
 
 void CounterObj::attach( app::ProcessObj* proc)
 {
-    counter->attach( proc->getId());
+    counter->attach( (Q_PID)proc->getId());
 }
 
 CounterInfoObj::CounterInfoObj()
