@@ -7,8 +7,8 @@ unix {
     HEADERS += "linux/*.hpp"
 }
 else {
-#    SOURCES += windows/*.cpp
-#   HEADERS += windows/*.hpp
+    SOURCES += windows/simple_counter.cpp
+    HEADERS += windows/simple_counter.hpp
 }
 
 SOURCES += *.cpp
