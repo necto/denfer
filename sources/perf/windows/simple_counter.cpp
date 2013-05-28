@@ -13,10 +13,10 @@
 namespace perf
 {
 
-namespace lin
+namespace win
 {
 
-SimpleCounterWorker::SimpleCounterWorker( pid_t _pid) : QTimer(), pid( _pid) 
+SimpleCounterWorker::SimpleCounterWorker(/* pid_t _pid*/) : QTimer()//, pid( _pid)
 {
     /* Connect timer timeout event to peekdata action */
     QObject::connect(this, SIGNAL(timeout()), this, SLOT(doCount()));
@@ -30,7 +30,7 @@ void SimpleCounterWorker::startCount()
     /**
      * Note: at this point worker must be already incapsulated
      * into separate thread to ensure proper ptrace_attach.
-     */
+     *
     long ptrace_ret = ptrace(PTRACE_ATTACH, pid,
                              NULL, NULL);
     
@@ -47,7 +47,7 @@ void SimpleCounterWorker::startCount()
 }
 
 void SimpleCounterWorker::doCount()
-{
+{/*
     struct user_regs_struct regs;
     quint64 rip, val;
 
@@ -63,6 +63,7 @@ void SimpleCounterWorker::doCount()
 
     ptrace(PTRACE_CONT, pid,                                                                                                                                                                     
             NULL, NULL);
+*/
 }
 
 void SimpleCounterWorker::getValues()
@@ -80,15 +81,16 @@ PerfCounterImpl* SimpleCounter::create()
     return (PerfCounterImpl*)(new SimpleCounter());
 }
 
-void SimpleCounter::init( pid_t _pid, int msec)
+void SimpleCounter::init(/* pid_t _pid, int msec*/)
 {
+    /*
     pid = _pid;
     worker = new SimpleCounterWorker( pid);
     QThread* thread = new QThread;
 
     worker->setInterval( msec);
 
-    /* Connect thread and worker objects signals/slots */
+    /* Connect thread and worker objects signals/slots
     QObject::connect( thread, SIGNAL( started()), worker, SLOT( startCount()));
     QObject::connect( worker, SIGNAL( finished()), worker, SLOT( deleteLater()));
     QObject::connect( thread, SIGNAL( finished()), thread, SLOT( deleteLater()));
@@ -98,6 +100,7 @@ void SimpleCounter::init( pid_t _pid, int msec)
                       this, SLOT( receiveValues( SimpleValues_t*)));
 
     worker->moveToThread(thread);
+    */
 }
 
 void SimpleCounter::start()
@@ -171,6 +174,6 @@ PerfCounterInfo SimpleCounter::doRegister()
     return inf;
 }
 
-}; // namespace lin
+}; // namespace win
 
 }; // namespace perf

@@ -9,12 +9,9 @@
 
 #pragma once
 
-#include "../iface.hpp"
+#include "iface.hpp"
 
 namespace perf
-{
-
-namespace lin
 {
 
 class PerfCounterImpl : public PerfCounter
@@ -51,7 +48,5 @@ public:
      */
     virtual void setSimpleTable( SimpleTable_t* table);
 };
-
-}; // namespace lin
 
 }; // namespace perf

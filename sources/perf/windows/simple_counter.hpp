@@ -18,7 +18,7 @@
 namespace perf
 {
 
-namespace lin
+namespace win
 {
 
 /**
@@ -38,7 +38,7 @@ public:
     /**
      * Construct new worker to be connected to _pid process.
      */
-    SimpleCounterWorker( pid_t _pid);
+    SimpleCounterWorker(/* pid_t _pid*/);
 
 public slots:
     /**
@@ -66,7 +66,7 @@ private:
     /**
      * Pid of the process to be attached to.
      */
-    pid_t pid;
+    //pid_t pid;
 
     /**
      * Internal storage class
@@ -88,7 +88,7 @@ public:
      * Init counter for given process
      * and with given sampling rate.
      */
-    void init( pid_t _pid, int msec);
+    void init( /*pid_t _pid, int msec*/);
 
     void start();
 
@@ -131,7 +131,7 @@ private:
     /**
      * Pid to be traced
      */
-    pid_t pid;
+    //pid_t pid;
 
     /**
      * Values to return
@@ -149,6 +149,6 @@ private:
     static PerfCounterInfo doRegister();
 };
 
-}; // namespace lin
+}; // namespace win
 
 }; // namespace perf
