@@ -1,3 +1,4 @@
+CONFIG += debug
 QT += script
 
 TEMPLATE = app
