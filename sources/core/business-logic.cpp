@@ -15,7 +15,7 @@ BusinessLogic::BusinessLogic()
 {
     procs = ProcessListIface::create();
     symbols = 0;
-//    perf_mgr = PerfManager::create();
+    perf_mgr = PerfManager::create();
 }
 
 BusinessLogic::~BusinessLogic()
