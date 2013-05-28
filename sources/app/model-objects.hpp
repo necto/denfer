@@ -60,7 +60,7 @@ public slots:
     QString getFile() const;
     void setFile( QString _name);
     int getId() const;
-    void setId( int _id);
+    void setId(int _id);
     int getParent() const;
     void setParent( int _id);
 private:

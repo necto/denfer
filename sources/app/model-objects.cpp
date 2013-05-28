@@ -99,7 +99,7 @@ int ProcessObj::getId() const
     return id;
 }
 
-void ProcessObj::setId( int _id)
+void ProcessObj::setId(int _id)
 {
     id = _id;
 }
@@ -128,7 +128,7 @@ int CounterObj::getId() const
     return id;
 }
 
-void CounterObj::setId( int _id)
+void CounterObj::setId(int _id)
 {
     id = _id;
 }
