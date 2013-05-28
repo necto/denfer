@@ -11,7 +11,6 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
-//#include <stdint.h>
 
 typedef unsigned long long uint64_t;
 

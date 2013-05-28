@@ -10,12 +10,9 @@
 
 #pragma once
 
-#include "../iface.hpp"
+#include "iface.hpp"
 
 namespace perf
-{
-
-namespace lin
 {
 
 class PerfCounterImpl;
@@ -97,7 +94,5 @@ private:
      */
     QVector<PerfCounterInfo> counters;
 };
-
-}; // namespace linux
 
 }; // namespace perf
