@@ -155,7 +155,19 @@ void CounterObj::reset()
 
 QString CounterObj::showValues()
 {
-    return QString("abcd");
+    perf::CounterValues* vals = counter->getValues();
+    perf::SimpleTable_t* tabl = vals->getSimpleTable();
+    QString res("");
+
+    QVector<perf::PlainRecord>::iterator iter;
+    for ( iter = tabl->begin();
+          iter != tabl->end();
+          iter++ )
+    {
+        res.append(QString("0x%1 %2").arg(iter->key,0,16).arg(iter->val)).append("\n");
+    }
+
+    return res;
 }
 
 CounterInfoObj::CounterInfoObj()

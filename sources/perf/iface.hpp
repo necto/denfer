@@ -115,6 +115,7 @@ typedef QVector<PlainRecord> SimpleTable_t;
  */
 class X_EXPORT CounterValues
 {
+public:
     /**
      * Get values as simple table
      * @return pointer to simple key-value data storage
