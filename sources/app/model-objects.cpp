@@ -135,7 +135,27 @@ void CounterObj::setId( int _id)
 
 void CounterObj::attach( app::ProcessObj* proc)
 {
-    counter->attach( proc->getId());
+    counter->attach( (Q_PID)proc->getId());
+}
+
+void CounterObj::start()
+{
+    counter->start();
+}
+
+void CounterObj::stop()
+{
+    counter->stop();
+}
+
+void CounterObj::reset()
+{
+    counter->reset();
+}
+
+QString CounterObj::showValues()
+{
+    return QString("abcd");
 }
 
 CounterInfoObj::CounterInfoObj()

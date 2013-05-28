@@ -96,7 +96,7 @@ public:
     /**
      * Attach counter to given process
      */
-    void attach( pid_t _pid);
+    void attach( Q_PID _pid);
 
     void start();
 

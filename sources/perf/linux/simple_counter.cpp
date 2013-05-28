@@ -85,11 +85,11 @@ PerfCounterImpl* SimpleCounter::create()
     return (PerfCounterImpl*)(new SimpleCounter());
 }
 
-void SimpleCounter::attach( pid_t _pid)
+void SimpleCounter::attach( Q_PID _pid)
 {
     pid = _pid;
-    worker = new SimpleCounterWorker( pid);
-    QThread* thread = new QThread;
+    worker = new SimpleCounterWorker( (pid_t)pid);
+    thread = new QThread;
 
     worker->setInterval( SAMPLING_INTERVAL);
 

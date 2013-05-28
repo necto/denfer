@@ -85,6 +85,20 @@ public slots:
 
     /* Attach counter to process */
     void attach( app::ProcessObj* proc);
+
+    /* Counter control */
+    void start();
+    void stop();
+    void reset();
+
+    /* Get counter result */
+    /**
+     * FIXME: This stuff is hardcoded to use with SimpleCounter!
+     * Get rid of it and replace with something more general,
+     * like usage of BussinesLogic facilities.
+     * This one was implemented for testing purposes only!
+     */
+    QString showValues();
 private:
     int id;
     PerfCounter* counter;

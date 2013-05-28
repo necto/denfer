@@ -134,7 +134,7 @@ public:
     /**
      * Attach counter to process with given pid
      */
-    virtual void attach( pid_t pid) = 0;
+    virtual void attach( Q_PID pid) = 0;
 
     /**
      * Start measuring of perf data
