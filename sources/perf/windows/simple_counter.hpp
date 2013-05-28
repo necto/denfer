@@ -112,7 +112,7 @@ public:
      * Init counter for given process
      * and with given sampling rate.
      */
-    void attach( DWORD pid, int msec);
+    void attach(DWORD pid);
 
     void start();
 

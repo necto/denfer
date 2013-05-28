@@ -128,12 +128,12 @@ PerfCounterImpl* SimpleCounter::create()
     return (PerfCounterImpl*)(new SimpleCounter());
 }
 
-void SimpleCounter::attach( DWORD pid, int msec)
+void SimpleCounter::attach(DWORD pid)
 {
     worker = new SimpleCounterWorker( pid);
     QThread* thread = new QThread;
 
-    worker->setInterval( msec);
+    worker->setInterval( SAMPLING_INTERVAL);
 
     /* Connect thread and worker objects signals/slots */
     QObject::connect( thread, SIGNAL( started()), worker, SLOT( startCount()));
