@@ -6,6 +6,10 @@ unix {
     SOURCES += "linux/*.cpp"
     HEADERS += "linux/*.hpp"
 }
+else {
+#    SOURCES += windows/*.cpp
+#   HEADERS += windows/*.hpp
+}
 
 SOURCES += *.cpp
 HEADERS += *.hpp

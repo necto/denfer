@@ -14,8 +14,8 @@ namespace core
 BusinessLogic::BusinessLogic()
 {
     procs = ProcessListIface::create();
-    symbols = 0;//SymbolTableIface::create("noname");
-    perf_mgr = PerfManager::create();
+    symbols = 0;
+//    perf_mgr = PerfManager::create();
 }
 
 BusinessLogic::~BusinessLogic()
