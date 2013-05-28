@@ -25,6 +25,7 @@ class PerfCounter;
  */
 class X_EXPORT PerfCounterFactory
 {
+public:
     /**
      * Create particular counter based on its guid
      * @params guid of counter
@@ -130,6 +131,11 @@ class X_EXPORT CounterValues
 class X_EXPORT PerfCounter
 {
 public:
+    /**
+     * Attach counter to process with given pid
+     */
+    virtual void attach( pid_t pid) = 0;
+
     /**
      * Start measuring of perf data
      */

@@ -77,17 +77,17 @@ class CounterObj : public QObject
     Q_PROPERTY( int id READ getId WRITE setId)
 public:
     CounterObj();
-    CounterObj( const perf::PerfCounter* cntr);
+    CounterObj( perf::PerfCounter* cntr);
 public slots:
     /* Sets/gets for properties */
     int getId() const;
     void setId( int _id);
 
     /* Attach counter to process */
-    void attach( Process proc);
+    void attach( app::ProcessObj* proc);
 private:
     int id;
-    const PerfCounter* counter;
+    PerfCounter* counter;
 };
 
 class CounterInfoObj : public QObject
@@ -104,7 +104,11 @@ public slots:
     void setName( QString _name);
     QString getUuid() const;
     void setUuid( QString name);
+
+    /* Create new counter of this type */
+    app::CounterObj* create();
 private:
+    const perf::PerfCounterInfo* counter_info;
     QString name;
     QString uuid;
 };

@@ -118,7 +118,7 @@ CounterObj::CounterObj()
 {
 }
 
-CounterObj::CounterObj( const perf::PerfCounter* cntr)
+CounterObj::CounterObj( perf::PerfCounter* cntr)
 {
     counter = cntr;
 }
@@ -133,10 +133,9 @@ void CounterObj::setId( int _id)
     id = _id;
 }
 
-void CounterObj::attach( Process proc)
+void CounterObj::attach( app::ProcessObj* proc)
 {
-    (void)proc;
-    //FIXME: add impl
+    counter->attach( proc->getId());
 }
 
 CounterInfoObj::CounterInfoObj()
@@ -145,6 +144,7 @@ CounterInfoObj::CounterInfoObj()
 
 CounterInfoObj::CounterInfoObj( const perf::PerfCounterInfo* info)
 {
+    counter_info = info;
     this->setProperty( "name", info->name);
     this->setProperty( "uuid", info->uuid.toString());
 }
@@ -167,6 +167,14 @@ QString CounterInfoObj::getUuid() const
 void CounterInfoObj::setUuid( QString _uuid)
 {
     uuid = _uuid;
+}
+
+CounterObj* CounterInfoObj::create()
+{
+    perf::PerfCounter* cntr;
+    QUuid quuid( uuid);
+    cntr = counter_info->factory->createCounter( quuid);
+    return new CounterObj( cntr);
 }
 
 }

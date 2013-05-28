@@ -66,7 +66,11 @@ signals:
      * Signal to report counted data.
      */
     void valuesReady( SimpleValues_t* values);
-
+    
+    /**
+     * Signal object for deletion
+     */
+    void finished();
 private:
     /**
      * Pid of the process to be attached to.
@@ -90,10 +94,9 @@ public:
     static PerfCounterImpl* create();
 
     /**
-     * Init counter for given process
-     * and with given sampling rate.
+     * Attach counter to given process
      */
-    void init( pid_t _pid, int msec);
+    void attach( pid_t _pid);
 
     void start();
 

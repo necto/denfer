@@ -10,6 +10,8 @@
 
 #include "simple_counter.hpp"
 
+#define SAMPLING_INTERVAL 100
+
 namespace perf
 {
 
@@ -56,8 +58,11 @@ void SimpleCounterWorker::doCount()
     ptrace(PTRACE_GETREGS, pid, NULL, &regs);
 
     //FIXME: add error processing here
-
+#ifdef __x86_64__
+    rip = regs.rip;
+#elif defined __i386__
     rip = regs.eip;
+#endif
 
     val = 1 + values->value( rip);
     values->insert( rip, val);
@@ -80,13 +85,13 @@ PerfCounterImpl* SimpleCounter::create()
     return (PerfCounterImpl*)(new SimpleCounter());
 }
 
-void SimpleCounter::init( pid_t _pid, int msec)
+void SimpleCounter::attach( pid_t _pid)
 {
     pid = _pid;
     worker = new SimpleCounterWorker( pid);
     QThread* thread = new QThread;
 
-    worker->setInterval( msec);
+    worker->setInterval( SAMPLING_INTERVAL);
 
     /* Connect thread and worker objects signals/slots */
     QObject::connect( thread, SIGNAL( started()), worker, SLOT( startCount()));
