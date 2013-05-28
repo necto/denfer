@@ -23,7 +23,7 @@ class PerfCounter;
 /**
  *  Genereic performance counter factory interface.
  */
-class PerfCounterFactory
+class X_EXPORT PerfCounterFactory
 {
     /**
      * Create particular counter based on its guid
@@ -36,7 +36,7 @@ class PerfCounterFactory
 /**
  * Enum of possible performance counter types
  */
-enum PerfCounterType
+enum X_EXPORT PerfCounterType
 {
     COUNTER_PLAIN,
     COUNTER_HIERARCHICAL,
@@ -47,7 +47,7 @@ enum PerfCounterType
 /**
  * Enum of perf counters providers
  */
-enum PerfCounterProvider
+enum X_EXPORT PerfCounterProvider
 {
     PROVIDER_DENFER,
     PROVIDER_LAST
@@ -56,7 +56,7 @@ enum PerfCounterProvider
 /**
  * Performance counter information
  */
-struct PerfCounterInfo
+struct X_EXPORT PerfCounterInfo
 {
     QString name;
     PerfCounterType type;
@@ -76,7 +76,7 @@ struct PerfCounterInfo
  * 
  * @author Denis Anisimov
  */
-class PerfManager
+class X_EXPORT PerfManager
 {
 public:
     /**
@@ -102,7 +102,7 @@ public:
 /**
  * Definitions of plain counter data storage structures
  */
-struct PlainRecord
+struct X_EXPORT PlainRecord
 {
     quint64 key;
     quint64 val;
@@ -113,7 +113,7 @@ typedef QVector<PlainRecord> SimpleTable_t;
 /**
  * Storage class for different types of possible values
  */
-class CounterValues
+class X_EXPORT CounterValues
 {
     /**
      * Get values as simple table
@@ -127,7 +127,7 @@ class CounterValues
  * 
  * @author Denis Anisimov
  */
-class PerfCounter 
+class X_EXPORT PerfCounter
 {
 public:
     /**

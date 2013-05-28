@@ -20,14 +20,14 @@ namespace syminfo
 {
 
 class Symbol;
-typedef int addr_t;
+typedef unsigned addr_t;
 typedef size_t addrsize_t;
 typedef QList<Symbol> SymbolList;
 
 /**
  * Class Symbol
  */
-class Symbol
+class X_EXPORT Symbol
 {
 private:
     /** Name of symbol */
@@ -87,7 +87,7 @@ inline uint qHash( const Symbol&  s) {return s.address() % std::numeric_limits<u
 
 typedef QSet<Symbol> SymbolSet;
 
-class SymbolTableIface
+class X_EXPORT SymbolTableIface
 {
 public:
     /**
