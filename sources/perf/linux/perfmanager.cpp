@@ -35,7 +35,7 @@ PerfCounterFactoryImpl::PerfCounterFactoryImpl()
 PerfCounterFactory* PerfCounterFactoryImpl::registerCounter( QUuid uuid, creator_t creator)
 {
     supported_counters.insert( uuid, creator);
-    return &PerfCounterFactoryImpl::getInstance();
+    return (PerfCounterFactory*)&PerfCounterFactoryImpl::getInstance();
 }
 
 PerfCounter* PerfCounterFactoryImpl::createCounter( QUuid uuid)

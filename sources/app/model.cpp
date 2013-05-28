@@ -118,7 +118,7 @@ QList<CounterInfoObj*> Model::getCountersInfo()
           iter != infos.end();
           iter++ )
     {
-        res.append( new CounterInfoObj( &(*iter)));
+        res.append( new CounterInfoObj( *iter));
     }
 
     return res;

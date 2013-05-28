@@ -97,7 +97,7 @@ class CounterInfoObj : public QObject
     Q_PROPERTY( QString uuid READ getUuid WRITE setUuid)
 public:
     CounterInfoObj();
-    CounterInfoObj( const perf::PerfCounterInfo* info);
+    CounterInfoObj( perf::PerfCounterInfo info);
 public slots:
     /* Sets/gets for properties */
     QString getName() const;
@@ -108,7 +108,7 @@ public slots:
     /* Create new counter of this type */
     app::CounterObj* create();
 private:
-    const perf::PerfCounterInfo* counter_info;
+    perf::PerfCounterInfo counter_info;
     QString name;
     QString uuid;
 };

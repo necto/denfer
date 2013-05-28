@@ -142,11 +142,11 @@ CounterInfoObj::CounterInfoObj()
 {
 }
 
-CounterInfoObj::CounterInfoObj( const perf::PerfCounterInfo* info)
+CounterInfoObj::CounterInfoObj( perf::PerfCounterInfo info)
 {
     counter_info = info;
-    this->setProperty( "name", info->name);
-    this->setProperty( "uuid", info->uuid.toString());
+    this->setProperty( "name", info.name);
+    this->setProperty( "uuid", info.uuid.toString());
 }
 
 QString CounterInfoObj::getName() const
@@ -173,7 +173,7 @@ CounterObj* CounterInfoObj::create()
 {
     perf::PerfCounter* cntr;
     QUuid quuid( uuid);
-    cntr = counter_info->factory->createCounter( quuid);
+    cntr = counter_info.factory->createCounter( quuid);
     return new CounterObj( cntr);
 }
 
