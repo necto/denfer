@@ -23,6 +23,7 @@ class PerfCounter;
  */
 class PerfCounterFactory
 {
+public:
     /**
      * Create particular counter based on its guid
      * @params guid of counter
@@ -127,6 +128,11 @@ class CounterValues
 class PerfCounter 
 {
 public:
+    /**
+     * Attach counter to process with given pid
+     */
+    virtual void attach( pid_t pid) = 0;
+
     /**
      * Start measuring of perf data
      */

@@ -13,12 +13,22 @@
 #include <QtScript/QScriptEngine>
 
 Q_DECLARE_METATYPE( QList<QString>)
+<<<<<<< Updated upstream
 Q_DECLARE_METATYPE( proc::Process)
 Q_DECLARE_METATYPE( QList<proc::Process>)
 Q_DECLARE_METATYPE( syminfo::Symbol)
 Q_DECLARE_METATYPE( QList<syminfo::Symbol>)
 Q_DECLARE_METATYPE( perf::PerfCounterInfo)
 Q_DECLARE_METATYPE( QVector<perf::PerfCounterInfo>)
+=======
+Q_DECLARE_METATYPE( app::ProcessObj*)
+Q_DECLARE_METATYPE( QList<app::ProcessObj*>)
+Q_DECLARE_METATYPE( app::SymbolObj*)
+Q_DECLARE_METATYPE( QList<app::SymbolObj*>)
+Q_DECLARE_METATYPE( app::CounterInfoObj*)
+Q_DECLARE_METATYPE( QList<app::CounterInfoObj*>)
+Q_DECLARE_METATYPE( app::CounterObj*)
+>>>>>>> Stashed changes
 
 namespace app
 {
@@ -66,7 +76,22 @@ void counterInfoFromScriptVal( const QScriptValue &obj, perf::PerfCounterInfo& i
     i.name = obj.property( "name").toString();
     i.uuid = QUuid( obj.property( "uuid").toString());
 }
+<<<<<<< Updated upstream
  
+=======
+
+QScriptValue counterObjToScriptVal( QScriptEngine *engine, CounterObj* const &i)
+{
+    return engine->newQObject( i);
+}
+
+void counterObjFromScriptVal( const QScriptValue &obj, CounterObj* &i)
+{
+    i = qobject_cast<CounterObj*>(obj.toQObject());
+}
+
+
+>>>>>>> Stashed changes
 Model::Model()
 {
     core = BusinessLogicIface::create();
@@ -115,6 +140,13 @@ bool Model::attachToProcess( int id)
 
 void Model::registerSelf( QScriptEngine* eng)
 {
+<<<<<<< Updated upstream
+=======
+    qScriptRegisterMetaType( eng, processObjToScriptVal, processObjFromScriptVal);
+    qScriptRegisterMetaType( eng, symbolObjToScriptVal, symbolObjFromScriptVal);
+    qScriptRegisterMetaType( eng, counterInfoObjToScriptVal, counterInfoObjFromScriptVal);
+    qScriptRegisterMetaType( eng, counterObjToScriptVal, counterObjFromScriptVal);
+>>>>>>> Stashed changes
     qScriptRegisterSequenceMetaType<QList<QString> > (eng);
     qScriptRegisterMetaType( eng, processToScriptVal, processFromScriptVal);
     qScriptRegisterMetaType( eng, symbolToScriptVal, symbolFromScriptVal);
