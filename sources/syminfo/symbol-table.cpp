@@ -42,7 +42,7 @@ SymbolTable::SymbolTable(QString filename)
     addr_t addr_size;
     QString sym_name;
     while ( infile >> start_addr >> addr_size >> sym_name)
-    {
+    {   
         // add check for inline fuctions 
         sym_set( insert( Symbol( start_addr, addr_size, sym_name)));   
     } 
@@ -58,29 +58,34 @@ void SymbolTable::insertSymbol( Symbol sym)
 {
     symbols.push_back( sym);
     root_seg.insert( sym.address(), sym.length(), symbols.size()-1); 
+    symname_map[sym.name()]=symbols.size()-1;
 }
 
 int SymbolTable::getNumberOfSymbols()
 {
-    return 10;
+    return symbols.size();
 }
 
-SymbolSet& SymbolTable::getSymbolList()
+SymbolList& SymbolTable::getSymbolList()
 {
-    return tmp;
+    return symbols.toList();
 }
 
-Symbol SymbolTable::getSymbol( addr_t address)
+Symbol SymbolTable::getSymbolByAddr( addr_t address)
 {
-    for ( SymbolList::const_iterator i = tmp.begin(); i != tmp.end(); ++i )
-        if ( i->contains( address) )
-            return *i;
-    return Symbol( 0, 0, "not found");
+    int sym_id = root_seg.findSymbol( address);
+    if ( sym_id == -1 ) 
+        return Symbol::undef;
+    return symbols[sym_id];
 }
 
-addr_t SymbolTable::getAddress( Symbol symbol)
+Symbol SymbolTable::getSymbolByName( QString name)
 {
-    return symbol.address();
+    if ( symname_map.contains( name))
+    {
+        return symbols[symname_map[name]];
+    }
+    return Symbol::undef;
 }
 
 SymbolTableIface* SymbolTableIface::create( QString name)

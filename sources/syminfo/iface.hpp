@@ -187,10 +187,10 @@ public:
     virtual SymbolSet& getSymbolList() = 0;
 
     /* Returns Symbol with specific address */
-    virtual Symbol getSymbol( addr_t address) = 0;
+    virtual Symbol getSymbolByAddr( addr_t address) = 0;
 
-    /* Returns address of symbol */
-    virtual addr_t getAddress( Symbol symbol) = 0;
+    /* Returns symbol with specific name */
+    virtual Symbol getSymbolByName( QString name) = 0;
 };
 
 }
