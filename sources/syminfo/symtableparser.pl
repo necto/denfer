@@ -18,7 +18,7 @@ if (`objdump -t $file` =~ /no symbols/) {
     exit -1;
 }
 
-my $out = "$file.objdump.out";
+my $out = "$file.objdump_symbols.out";
 `objdump -t $file  | grep -P "^[0-9a-f]+ [^\.\*]*F" | sort > $out`;
 `chmod 777 $out`;
 

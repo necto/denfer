@@ -2,7 +2,7 @@
 
 const int MY_GLOBAL_CONST = 0;
 
-volatile void HelloWorld()
+__attribute__((always_inline)) inline void HelloWorld()
 {
     std::cout<<"Hello world"<<std::endl;
 }
