@@ -10,20 +10,17 @@
 
 #pragma once
 
+#include <windows.h>
+#include <TlHelp32.h>
 #include "perfcounter.hpp"
 #include "perfmanager.hpp"
 #include <QThread>
 #include <QTimer>
-#include <sys/types.h>
-#include <sys/ptrace.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <sys/user.h>
 
 namespace perf
 {
 
-namespace lin
+namespace win
 {
 
 /**
@@ -43,8 +40,12 @@ public:
     /**
      * Construct new worker to be connected to _pid process.
      */
-    SimpleCounterWorker( pid_t _pid);
+    SimpleCounterWorker( DWORD _pid);
 
+    /**
+     * @brief release all resources.
+     */
+    void stop();
 public slots:
     /**
      * Perform thread-specific initialization and start counting.
@@ -66,22 +67,36 @@ signals:
      * Signal to report counted data.
      */
     void valuesReady( SimpleValues_t* values);
-    
-    /**
-     * Signal object for deletion
-     */
-    void finished();
+
 private:
     /**
-     * Pid of the process to be attached to.
+     * Process id
      */
-    pid_t pid;
+    DWORD pid;
+
+    /**
+     * Process handle to be attached to
+     */
+    HANDLE hProcess;
+
+    /**
+     * Vector for threads owned by process
+     */
+    QVector<THREADENTRY32> threads;
+
+    /**
+     * Counter used for sporadic update of thread list.
+     */
+    short loopCounter;
 
     /**
      * Internal storage class
      * FIXME: reconsider. Should be something faster
      */
     SimpleValues_t* values;
+
+private slots:
+    void updateThreadList();
 };
 
 class SimpleCounter : public QObject, public PerfCounterImpl
@@ -94,9 +109,10 @@ public:
     static PerfCounterImpl* create();
 
     /**
-     * Attach counter to given process
+     * Init counter for given process
+     * and with given sampling rate.
      */
-    void attach( Q_PID _pid);
+    void attach(Q_PID pid);
 
     void start();
 
@@ -137,9 +153,9 @@ private:
     QThread* thread;
 
     /**
-     * Pid to be traced
+     * Thread handle to be attached to
      */
-    pid_t pid;
+    HANDLE hProcess;
 
     /**
      * Values to return
@@ -157,6 +173,6 @@ private:
     static PerfCounterInfo doRegister();
 };
 
-}; // namespace lin
+}; // namespace win
 
 }; // namespace perf

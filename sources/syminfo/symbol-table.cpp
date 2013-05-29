@@ -5,6 +5,7 @@
  * Copyright 2013 Denfer team. See http://github.com/necto/denfer
  */
 
+#include <QProcess>
 #include "iface.hpp"
 #include "symbol-table.hpp"
 
@@ -19,8 +20,44 @@ SymbolTable::SymbolTable()
     }
 }
 
+SymbolTable::SymbolTable(QString filename)
+{
+
+    QString command = "symtableparser.pl -f " + filename " > temp.out";
+#if 0
+    QString program = "symtableparser.pl";
+    QStringList arguments;
+    arguments << "-f " << filename;
+
+    QProcess *parser = new QProcess();
+#endif
+    int status = system(command); // QProcess 
+    if ( status != 0)
+    {
+        // ERROR
+    }
+
+    ifstream infile("temp.out");
+    addr_t start_addr;
+    addr_t addr_size;
+    QString sym_name;
+    while ( infile >> start_addr >> addr_size >> sym_name)
+    {
+        // add check for inline fuctions 
+        sym_set( insert( Symbol( start_addr, addr_size, sym_name)));   
+    } 
+
+}
+
+
 SymbolTable::~SymbolTable()
 {
+}
+
+void SymbolTable::insertSymbol( Symbol sym)
+{
+    symbols.push_back( sym);
+    root_seg.insert( sym.address(), sym.length(), symbols.size()-1); 
 }
 
 int SymbolTable::getNumberOfSymbols()
@@ -28,7 +65,7 @@ int SymbolTable::getNumberOfSymbols()
     return 10;
 }
 
-SymbolList& SymbolTable::getSymbolList()
+SymbolSet& SymbolTable::getSymbolList()
 {
     return tmp;
 }

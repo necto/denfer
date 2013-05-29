@@ -15,59 +15,102 @@
 namespace perf
 {
 
-namespace lin
+namespace win
 {
 
-SimpleCounterWorker::SimpleCounterWorker( pid_t _pid) : QTimer(), pid( _pid) 
+SimpleCounterWorker::SimpleCounterWorker(DWORD _pid)
+    : QTimer()
+    , pid(_pid)
+    , loopCounter(0)
 {
     /* Connect timer timeout event to peekdata action */
     QObject::connect(this, SIGNAL(timeout()), this, SLOT(doCount()));
+    QObject::connect(this, SIGNAL(timeout()), this, SLOT(updateThreadList()));
 
     /* Create internal data storage */
     values = new SimpleValues_t;
-};
+}
 
 void SimpleCounterWorker::startCount()
 {
-    /**
-     * Note: at this point worker must be already incapsulated
-     * into separate thread to ensure proper ptrace_attach.
-     */
-    long ptrace_ret = ptrace(PTRACE_ATTACH, pid,
-                             NULL, NULL);
-    
-    if ( ptrace_ret == -1)
-    {
-        // FIXME: Add error processing here
+    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+    hProcess = OpenProcess(
+                PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+                FALSE,
+                pid
+    );
+    if (hProcess == INVALID_HANDLE_VALUE) {
+        // FIXME [avlechen] add err processing
     }
 
-    wait(NULL);
-    ptrace(PTRACE_CONT, pid, NULL, NULL);
-
-    /* Start timer */
     this->start();
+}
+
+void SimpleCounterWorker::stop()
+{
+    QTimer::stop();
+    threads.clear();
+    SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
+    CloseHandle(hProcess);
 }
 
 void SimpleCounterWorker::doCount()
 {
-    struct user_regs_struct regs;
-    quint64 rip, val;
+    for (QVector<THREADENTRY32>::iterator it = threads.begin(); it != threads.end(); ++it) {
+        HANDLE hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, it->th32ThreadID);
+        SuspendThread(hThread);
 
-    kill( pid, SIGSTOP);
-    wait(NULL);
-    ptrace(PTRACE_GETREGS, pid, NULL, &regs);
-
-    //FIXME: add error processing here
-#ifdef __x86_64__
-    rip = regs.rip;
-#elif defined __i386__
-    rip = regs.eip;
+        CONTEXT c;
+        memset(&c, 0, sizeof(CONTEXT));
+        c.ContextFlags = CONTEXT_CONTROL;
+        if (GetThreadContext(hThread, &c) == FALSE) {
+            // FIXME [avlechen] add error processing
+        }
+        quint64 rip, val;
+#ifdef _M_IX86
+        rip = c.Eip;
+#elif _M_X64
+        rip = c.Rip;
+#else
+#error "Platform not supported!"
 #endif
+        val = values->value( rip) + 1;
+        values->insert( rip, val);
+        ResumeThread(hThread);
+    }
+}
 
-    val = 1 + values->value( rip);
-    values->insert( rip, val);
+void SimpleCounterWorker::updateThreadList()
+{
+    // now enum all threads for this processId
+    if (loopCounter) {
+        HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, pid);
 
-    ptrace(PTRACE_CONT, pid, NULL, NULL);
+        // FIXME [avlechen] Strategy for exeptions is not defined
+        if (hSnap == INVALID_HANDLE_VALUE) {
+            DWORD exitCode = 0;
+            if (GetExitCodeProcess(hProcess, &exitCode)) {
+                if (exitCode != STILL_ACTIVE)  {
+                    // FIXME [avlechen] Target program exited with code 0x%08x, exitCode;
+                }
+            } else {
+                // FIXME [avlechen] CreateToolhelp32Snapshot failed with error code 0x%08x, GetLastError()
+            }
+        }
+
+        threads.clear();
+        THREADENTRY32 te;
+        memset(&te, 0, sizeof(te));
+        te.dwSize = sizeof(te);
+        while (Thread32First(hSnap, &te) == FALSE) {
+            if (te.th32OwnerProcessID == pid) {
+                threads.push_back(te);
+            }
+        }
+        // TODO [avlechen]: Possibly, we should store hSnap during sampling
+        CloseHandle(hSnap);
+    }
+    loopCounter++;
 }
 
 void SimpleCounterWorker::getValues()
@@ -85,11 +128,10 @@ PerfCounterImpl* SimpleCounter::create()
     return (PerfCounterImpl*)(new SimpleCounter());
 }
 
-void SimpleCounter::attach( Q_PID _pid)
+void SimpleCounter::attach(Q_PID pid)
 {
-    pid = _pid;
-    worker = new SimpleCounterWorker( (pid_t)pid);
-    thread = new QThread;
+    worker = new SimpleCounterWorker( (DWORD)pid);
+    QThread* thread = new QThread;
 
     worker->setInterval( SAMPLING_INTERVAL);
 
@@ -113,6 +155,7 @@ void SimpleCounter::start()
 void SimpleCounter::stop()
 {
     thread->quit();
+    worker->stop();
 }
 
 void SimpleCounter::reset()
@@ -176,6 +219,6 @@ PerfCounterInfo SimpleCounter::doRegister()
     return inf;
 }
 
-}; // namespace lin
+}; // namespace win
 
 }; // namespace perf

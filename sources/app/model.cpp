@@ -19,6 +19,7 @@ Q_DECLARE_METATYPE( app::SymbolObj*)
 Q_DECLARE_METATYPE( QList<app::SymbolObj*>)
 Q_DECLARE_METATYPE( app::CounterInfoObj*)
 Q_DECLARE_METATYPE( QList<app::CounterInfoObj*>)
+Q_DECLARE_METATYPE( app::CounterObj*)
 
 namespace app
 {
@@ -53,6 +54,15 @@ void counterInfoObjFromScriptVal( const QScriptValue &obj, CounterInfoObj* &i)
     i = qobject_cast<CounterInfoObj*>(obj.toQObject());
 }
 
+QScriptValue counterObjToScriptVal( QScriptEngine *engine, CounterObj* const &i)
+{
+    return engine->newQObject( i);
+}
+
+void counterObjFromScriptVal( const QScriptValue &obj, CounterObj* &i)
+{
+    i = qobject_cast<CounterObj*>(obj.toQObject());
+}
 
 Model::Model()
 {
@@ -108,7 +118,7 @@ QList<CounterInfoObj*> Model::getCountersInfo()
           iter != infos.end();
           iter++ )
     {
-        res.append( new CounterInfoObj( &(*iter)));
+        res.append( new CounterInfoObj( *iter));
     }
 
     return res;
@@ -131,6 +141,7 @@ void Model::registerSelf( QScriptEngine* eng)
     qScriptRegisterMetaType( eng, processObjToScriptVal, processObjFromScriptVal);
     qScriptRegisterMetaType( eng, symbolObjToScriptVal, symbolObjFromScriptVal);
     qScriptRegisterMetaType( eng, counterInfoObjToScriptVal, counterInfoObjFromScriptVal);
+    qScriptRegisterMetaType( eng, counterObjToScriptVal, counterObjFromScriptVal);
     qScriptRegisterSequenceMetaType<QList<QString> > (eng);
     qScriptRegisterSequenceMetaType<QList<app::ProcessObj*> > (eng);
     qScriptRegisterSequenceMetaType<QList<app::SymbolObj*> > (eng);

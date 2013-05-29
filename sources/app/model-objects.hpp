@@ -60,7 +60,7 @@ public slots:
     QString getFile() const;
     void setFile( QString _name);
     int getId() const;
-    void setId( int _id);
+    void setId(int _id);
     int getParent() const;
     void setParent( int _id);
 private:
@@ -77,17 +77,31 @@ class CounterObj : public QObject
     Q_PROPERTY( int id READ getId WRITE setId)
 public:
     CounterObj();
-    CounterObj( const perf::PerfCounter* cntr);
+    CounterObj( perf::PerfCounter* cntr);
 public slots:
     /* Sets/gets for properties */
     int getId() const;
     void setId( int _id);
 
     /* Attach counter to process */
-    void attach( Process proc);
+    void attach( app::ProcessObj* proc);
+
+    /* Counter control */
+    void start();
+    void stop();
+    void reset();
+
+    /* Get counter result */
+    /**
+     * FIXME: This stuff is hardcoded to use with SimpleCounter!
+     * Get rid of it and replace with something more general,
+     * like usage of BussinesLogic facilities.
+     * This one was implemented for testing purposes only!
+     */
+    QString showValues();
 private:
     int id;
-    const PerfCounter* counter;
+    PerfCounter* counter;
 };
 
 class CounterInfoObj : public QObject
@@ -97,14 +111,18 @@ class CounterInfoObj : public QObject
     Q_PROPERTY( QString uuid READ getUuid WRITE setUuid)
 public:
     CounterInfoObj();
-    CounterInfoObj( const perf::PerfCounterInfo* info);
+    CounterInfoObj( perf::PerfCounterInfo info);
 public slots:
     /* Sets/gets for properties */
     QString getName() const;
     void setName( QString _name);
     QString getUuid() const;
     void setUuid( QString name);
+
+    /* Create new counter of this type */
+    app::CounterObj* create();
 private:
+    perf::PerfCounterInfo counter_info;
     QString name;
     QString uuid;
 };

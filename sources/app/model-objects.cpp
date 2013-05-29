@@ -99,7 +99,7 @@ int ProcessObj::getId() const
     return id;
 }
 
-void ProcessObj::setId( int _id)
+void ProcessObj::setId(int _id)
 {
     id = _id;
 }
@@ -118,7 +118,7 @@ CounterObj::CounterObj()
 {
 }
 
-CounterObj::CounterObj( const perf::PerfCounter* cntr)
+CounterObj::CounterObj( perf::PerfCounter* cntr)
 {
     counter = cntr;
 }
@@ -128,25 +128,57 @@ int CounterObj::getId() const
     return id;
 }
 
-void CounterObj::setId( int _id)
+void CounterObj::setId(int _id)
 {
     id = _id;
 }
 
-void CounterObj::attach( Process proc)
+void CounterObj::attach( app::ProcessObj* proc)
 {
-    (void)proc;
-    //FIXME: add impl
+    counter->attach( (Q_PID)proc->getId());
+}
+
+void CounterObj::start()
+{
+    counter->start();
+}
+
+void CounterObj::stop()
+{
+    counter->stop();
+}
+
+void CounterObj::reset()
+{
+    counter->reset();
+}
+
+QString CounterObj::showValues()
+{
+    perf::CounterValues* vals = counter->getValues();
+    perf::SimpleTable_t* tabl = vals->getSimpleTable();
+    QString res("");
+
+    QVector<perf::PlainRecord>::iterator iter;
+    for ( iter = tabl->begin();
+          iter != tabl->end();
+          iter++ )
+    {
+        res.append(QString("0x%1 %2").arg(iter->key,0,16).arg(iter->val)).append("\n");
+    }
+
+    return res;
 }
 
 CounterInfoObj::CounterInfoObj()
 {
 }
 
-CounterInfoObj::CounterInfoObj( const perf::PerfCounterInfo* info)
+CounterInfoObj::CounterInfoObj( perf::PerfCounterInfo info)
 {
-    this->setProperty( "name", info->name);
-    this->setProperty( "uuid", info->uuid.toString());
+    counter_info = info;
+    this->setProperty( "name", info.name);
+    this->setProperty( "uuid", info.uuid.toString());
 }
 
 QString CounterInfoObj::getName() const
@@ -167,6 +199,14 @@ QString CounterInfoObj::getUuid() const
 void CounterInfoObj::setUuid( QString _uuid)
 {
     uuid = _uuid;
+}
+
+CounterObj* CounterInfoObj::create()
+{
+    perf::PerfCounter* cntr;
+    QUuid quuid( uuid);
+    cntr = counter_info.factory->createCounter( quuid);
+    return new CounterObj( cntr);
 }
 
 }

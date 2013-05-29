@@ -1,4 +1,5 @@
 #Includes common configuration for all subdirectory .pro files.
+CONFIG += debug
 INCLUDEPATH += . ..
 WARNINGS += -Wall
 

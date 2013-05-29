@@ -11,15 +11,10 @@
 namespace perf
 {
 
-using lin::PerfManagerImpl;
-
 PerfManager* PerfManager::create()
 {
     return (PerfManager*)( &PerfManagerImpl::getInstance());
 }
-
-namespace lin
-{
 
 PerfCounterFactoryImpl& PerfCounterFactoryImpl::getInstance()
 {
@@ -35,7 +30,7 @@ PerfCounterFactoryImpl::PerfCounterFactoryImpl()
 PerfCounterFactory* PerfCounterFactoryImpl::registerCounter( QUuid uuid, creator_t creator)
 {
     supported_counters.insert( uuid, creator);
-    return &PerfCounterFactoryImpl::getInstance();
+    return (PerfCounterFactory*)&PerfCounterFactoryImpl::getInstance();
 }
 
 PerfCounter* PerfCounterFactoryImpl::createCounter( QUuid uuid)
@@ -69,7 +64,5 @@ void PerfManagerImpl::registerCounter( PerfCounterInfo info)
 {
     counters.push_back(info);
 }
-
-}; // namespace linux
 
 }; // namespace perf

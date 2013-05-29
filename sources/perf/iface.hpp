@@ -11,7 +11,6 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 #include <QtCore/QUuid>
-//#include <stdint.h>
 
 typedef unsigned long long uint64_t;
 
@@ -25,6 +24,7 @@ class PerfCounter;
  */
 class X_EXPORT PerfCounterFactory
 {
+public:
     /**
      * Create particular counter based on its guid
      * @params guid of counter
@@ -115,6 +115,7 @@ typedef QVector<PlainRecord> SimpleTable_t;
  */
 class X_EXPORT CounterValues
 {
+public:
     /**
      * Get values as simple table
      * @return pointer to simple key-value data storage
@@ -130,6 +131,11 @@ class X_EXPORT CounterValues
 class X_EXPORT PerfCounter
 {
 public:
+    /**
+     * Attach counter to process with given pid
+     */
+    virtual void attach( Q_PID pid) = 0;
+
     /**
      * Start measuring of perf data
      */
