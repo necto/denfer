@@ -20,4 +20,10 @@ public:
     virtual void updateWindow(QList<QString> list);
 private:
     Ui::MainWindow *ui;
+
+    void on_exitAct_triggered();
+
+private:
+    void createMenus();
+
 };

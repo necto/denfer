@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    createMenus();
 }
 
 MainWindow::~MainWindow()
@@ -25,6 +26,10 @@ void MainWindow::updateWindow(QList<QString> list)
     this->ui->Processes->addItems(*qlist);
 }
 
+void MainWindow::createMenus()
+{
+}
+
 namespace gui
 {
 
@@ -42,3 +47,8 @@ bool MainWindowIface::destroy( MainWindowIface* ref)
 }
 
 } //namespace gui
+
+void MainWindow::on_exitAct_triggered()
+{
+
+}

@@ -18,17 +18,17 @@
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>50</y>
+      <y>70</y>
       <width>571</width>
-      <height>421</height>
+      <height>391</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>20</y>
+      <x>50</x>
+      <y>40</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -41,20 +41,20 @@
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>20</y>
+      <y>40</y>
       <width>71</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Functions</string>
+     <string>Counters</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>20</y>
+      <y>40</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -67,9 +67,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>40</y>
+      <y>70</y>
       <width>151</width>
-      <height>421</height>
+      <height>391</height>
      </rect>
     </property>
     <item>
@@ -92,21 +92,57 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>40</y>
+      <y>70</y>
       <width>151</width>
-      <height>421</height>
+      <height>391</height>
      </rect>
     </property>
     <item>
      <property name="text">
-      <string>DummyFunc1</string>
+      <string>Counter1</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>DummyFunc2</string>
+      <string>Counter2</string>
      </property>
     </item>
+   </widget>
+   <widget class="QLineEdit" name="newProc">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>10</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="runProc">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>10</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Run process</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>New process</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -122,23 +158,37 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOptions"/>
-    <addaction name="actionExit"/>
+    <addaction name="exitAct"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionOptions">
-   <property name="text">
-    <string>Options...</string>
-   </property>
-  </action>
-  <action name="actionExit">
+  <action name="exitAct">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>exitAct</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>21</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>19</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

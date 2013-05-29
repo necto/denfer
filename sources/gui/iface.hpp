@@ -24,4 +24,4 @@ public:
     virtual void updateWindow(QList<QString> list) = 0;
 };
 
-}; //namespaceg gui
+}; //namespace gui
