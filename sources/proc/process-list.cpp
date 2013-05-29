@@ -41,7 +41,7 @@ Process ProcessList::startProcess( QString cmd)
     qint64 id;
     p.name = cmd;
 
-    if ( !QProcess::startDetached( cmd, QStringList(""), "", &id) )
+    if ( !QProcess::startDetached( cmd, QStringList(), "", &id) )
     {
         qDebug() << "Cannot start process " << cmd;
     }
