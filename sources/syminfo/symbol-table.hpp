@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include<QVector>
 #include "iface.hpp"
 
 namespace syminfo
@@ -14,14 +15,20 @@ namespace syminfo
 
 class SymbolTable :public SymbolTableIface
 {
-    SymbolList tmp;
+    typedef QVector<Symbol> SymVec;
+
+    Segment seg_root;
+
+    SymVec symbols;
+
+    void insertSymbol( const Symbol& sym);
 
 public:
     SymbolTable();
     ~SymbolTable();
     
     int getNumberOfSymbols();
-    SymbolList& getSymbolList();
+    SymbolSet& getSymbolList();
     Symbol getSymbol( addr_t address);
     addr_t getAddress( Symbol symbol);
 };
