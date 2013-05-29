@@ -13,6 +13,8 @@
 namespace syminfo
 {
 
+const Symbol Symbol::undef = Symbol( ~0, 0);
+
 SymbolTable::SymbolTable(QString filename)
 {
 

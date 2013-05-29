@@ -174,8 +174,6 @@ public:
     static const Symbol undef;
 };
 
-const Symbol Symbol::undef = Symbol( ~0, 0);
-
 inline uint qHash( const Symbol&  s) {return s.address() % std::numeric_limits<uint>::max();}
 
 class X_EXPORT SymbolTableIface
