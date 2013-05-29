@@ -26,11 +26,11 @@ class SymbolTable :public SymbolTableIface
     void insertSymbol( const Symbol& sym);
 
 public:
-    SymbolTable();
+    SymbolTable( QString filename);
     ~SymbolTable();
     
     int getNumberOfSymbols();
-    SymbolList& getSymbolList();
+    SymbolList getSymbolList();
     Symbol getSymbolByAddr( addr_t address);
     Symbol getSymbolByName( QString name);
 };

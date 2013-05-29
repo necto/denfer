@@ -14,6 +14,7 @@
 #include <limits>
 #include <QString>
 #include <QList>
+#include <set>
 
 namespace syminfo
 {
@@ -33,17 +34,18 @@ struct Segment
     /** index of symbol */
     int sym_ind;
 
-    typedef set<Segment> SegmentSet;
+    typedef std::set<Segment> SegmentSet;
     SegmentSet inner;
 
     Segment( addr_t a, addrsize_t l, int ind = -1): addr(a), len(l), sym_ind(ind) {}
+    Segment(): addr(0), len(0), sym_ind(0) {}
     
     inline bool operator<(const Segment& S) const
     {
         return addr<S.addr;
     }
 
-    inline bool contains( addr_t a)
+    inline bool contains( addr_t a) const
     {
        return addr <= a && a <= (addr+len); 
     }
@@ -52,11 +54,11 @@ struct Segment
      * Returns index of symbol.
      * If addr isn't existed, return -1
      */
-    inline int findSymbol( addr_t a)
+    inline int findSymbol( addr_t a) const
     {
         if ( contains(a))
         {
-            SegmentSet::iterator sit = inner.upper_bound( a);
+            SegmentSet::iterator sit = inner.upper_bound( Segment(a,0));
             if ( sit == inner.begin())
                 return sym_ind;
             
@@ -79,7 +81,7 @@ struct Segment
     {
         if ( contains(a) && contains(a+l))
         {
-            SegmentSet::iterator sit = inner.upper_bound( a), it, nit;
+            SegmentSet::iterator sit = inner.upper_bound( Segment( a,0)), it, nit;
             if ( sit == inner.begin())
             {
                 inner.insert( Segment(a,l,ind));
@@ -89,12 +91,19 @@ struct Segment
             sit--;
             if ( (*sit).contains(a) && (*sit).contains(a+l))
             {
-                return (*sit).insert( a,l,ind);
+                Segment temp = *sit;
+                inner.erase(sit);
+                int ret = temp.insert( a, l, ind);
+                inner.insert( temp);
+
+                return ret;
             }
             
             Segment new_seg(a,l,ind);
 
-            for ( it = inner.lower_bound(a); it!= inner.upper_bound(a+l); it=nit)
+            for ( it = inner.lower_bound(Segment(a,0)); 
+                  it!= inner.upper_bound(Segment( a+l,0)); 
+                  it=nit)
             {
                 nit = it;
                 nit++;
@@ -134,9 +143,9 @@ public:
     inline void setName( const QString& n) { name_ = n; }
     inline void setAddress( addr_t a) { segm_.addr = a;}
     inline void setLength( addrsize_t l) { segm_.len = l;}
-    inline void addSegment( addr_t a, addrsize_t l) { inl_.push_back(Segment( a,l))}
+    inline void addSegment( addr_t a, addrsize_t l) { inl_.push_back(Segment( a,l));}
     inline bool contains( addr_t a) const
-    { return address_ <=a && a <=(address_ + length_); }
+    { return segm_.contains( a); }
 
 #if 0
     inline bool operator<(const Symbol& S) const
@@ -160,12 +169,12 @@ public:
     }
 
     Symbol() //Needed for scripting
-        :name_(), address_(), length_() {}
+        :name_(), segm_(), inl_() {}
 
     static const Symbol undef;
 };
 
-static const Symbol Symbol::undef = Symbol( ~0, 0);
+const Symbol Symbol::undef = Symbol( ~0, 0);
 
 inline uint qHash( const Symbol&  s) {return s.address() % std::numeric_limits<uint>::max();}
 
@@ -184,7 +193,7 @@ public:
     virtual int getNumberOfSymbols() = 0;
 
     /** Returns reference to SymbolList */
-    virtual SymbolSet& getSymbolList() = 0;
+    virtual SymbolList getSymbolList() = 0;
 
     /* Returns Symbol with specific address */
     virtual Symbol getSymbolByAddr( addr_t address) = 0;
